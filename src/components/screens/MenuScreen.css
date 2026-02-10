@@ -1,0 +1,14 @@
+.powerup-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.powerup-badge {
+  background: #0f3460;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 8px;
+  border: 2px solid #16213e;
+}

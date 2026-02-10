@@ -1,0 +1,13 @@
+.shop-item {
+  background: #0f3460;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.shop-item button {
+  margin-left: 15px;
+  flex-shrink: 0;
+}

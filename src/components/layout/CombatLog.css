@@ -1,0 +1,38 @@
+.combat-log {
+  background: #0f3460;
+  padding: 15px;
+  margin: 20px 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.log-entry {
+  font-size: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid #16213e;
+}
+
+.log-entry.log-attack {
+  color: #e74c3c;
+}
+
+.log-entry.log-defend {
+  color: #2ecc71;
+}
+
+.log-entry.log-gold {
+  color: #f39c12;
+}
+
+.log-entry.log-victory {
+  color: #2ecc71;
+  font-weight: bold;
+}
+
+.log-entry.log-trips {
+  color: #f39c12;
+}
+
+.log-entry.log-cursed {
+  color: #e74c3c;
+}

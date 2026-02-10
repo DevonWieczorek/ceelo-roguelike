@@ -1,0 +1,10 @@
+.powerups-earned {
+  margin-top: 20px;
+  background: #0f3460;
+  padding: 15px;
+  border: 4px solid #2ecc71;
+  box-shadow: 
+    0 0 0 2px #16213e,
+    0 0 0 4px #2ecc71,
+    4px 4px 0 4px rgba(0,0,0,0.3);
+}
