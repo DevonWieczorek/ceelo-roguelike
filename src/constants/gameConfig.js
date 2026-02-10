@@ -6,7 +6,6 @@ export const GAME_CONFIG = {
   STARTING_REROLLS: 1,
   MAX_ROUNDS: 5,
   ENEMY_DAMAGE_MULTIPLIER: 0.8,
-  AUTO_REROLL_LIMIT: 999,
 };
 
 // Initial powerup prices
@@ -15,7 +14,7 @@ export const INITIAL_PRICES = {
   doubleDown: 30,
   pointBoost: 15,
   aceSaver: 35,
-  guaranteedPoint: 22,
+
   highRoller: 40,
   wildDie: 25,
   extraReroll: 12,
@@ -50,12 +49,7 @@ export const POWERUP_INFO = {
     description: '1-1-1 becomes 6-6-6 once per round',
     stackable: false,
   },
-  guaranteedPoint: {
-    name: 'Guaranteed Point',
-    icon: '🔄',
-    description: 'Unlimited auto-rerolls',
-    stackable: false,
-  },
+
   highRoller: {
     name: 'High Roller',
     icon: '🎰',

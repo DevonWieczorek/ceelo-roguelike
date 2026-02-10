@@ -13,7 +13,7 @@ const createInitialState = () => ({
     doubleDown: 0,
     pointBoost: 0,
     aceSaver: 0,
-    guaranteedPoint: 0,
+
     highRoller: 0,
     wildDie: 0,
     extraReroll: 0,
