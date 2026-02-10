@@ -50,7 +50,7 @@ const Game = () => {
       playerHP: gameState.baseHP,
       playerMaxHP: gameState.baseHP,
       rerollsLeft: totalRerolls,
-      autoRerolls: gameState.powerups.guaranteedPoint ? 999 : 3,
+      autoRerolls: 3,
     });
     
     combat.resetCombatState();

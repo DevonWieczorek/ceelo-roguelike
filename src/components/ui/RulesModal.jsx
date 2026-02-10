@@ -44,7 +44,7 @@ const RulesModal = ({ onClose, playSound }) => {
             <li><strong>📈 POINT BOOST (15g):</strong> Adds +1 to all your point values. Stackable!</li>
             <li><strong>🔄 EXTRA REROLL (12g):</strong> Adds +1 manual reroll per round. Stackable! Remember: "no score" rerolls are always free!</li>
             <li><strong>✨ ACE SAVER (35g):</strong> Once per round, turn 1-1-1 (worst trips) into 6-6-6 (best trips)!</li>
-            <li><strong>🔄 GUARANTEED POINT (22g):</strong> Unlimited auto-rerolls. Never waste a turn!</li>
+
             <li><strong>🎰 HIGH ROLLER (40g):</strong> All dice always roll 4, 5, or 6. Prevents 1-2-3 entirely!</li>
             <li><strong>🍀 LUCKY CLOVER (30g):</strong> 15% chance per level to reroll low dice towards 4-5-6. Stackable!</li>
             <li><strong>🛡️ DEVIL'S WARD (30g):</strong> 20% chance per level to reroll a die to avoid 1-2-3. Stackable!</li>
