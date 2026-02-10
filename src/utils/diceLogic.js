@@ -1,4 +1,4 @@
-import { ROLL_TYPES } from '../constants/gameConfig';
+import { ROLL_TYPES, GAME_CONFIG } from '../constants/gameConfig';
 
 /**
  * Analyzes a roll of three dice and returns the result type
@@ -21,9 +21,9 @@ export const analyzeCeeloRoll = (dice, pointBoostCount = 0, aceSaverActive = fal
   if (d1 === d2 && d2 === d3) {
     // Ace saver: 1-1-1 becomes 6-6-6
     if (d1 === 1 && aceSaverActive && !usedAceSaver) {
-      return { type: ROLL_TYPES.TRIPS, value: 6, display: `TRIPS! ${6}-${6}-${6}`, usedAceSaver: true };
+      return { type: ROLL_TYPES.TRIPS, value: 6 + GAME_CONFIG.TRIPS_BONUS, display: `TRIPS! ${6}-${6}-${6}`, usedAceSaver: true };
     }
-    return { type: ROLL_TYPES.TRIPS, value: d1, display: `TRIPS! ${d1}-${d1}-${d1}` };
+    return { type: ROLL_TYPES.TRIPS, value: d1 + GAME_CONFIG.TRIPS_BONUS, display: `TRIPS! ${d1}-${d1}-${d1}` };
   }
   
   // Check for point (pair + singleton)

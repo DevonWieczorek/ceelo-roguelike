@@ -17,7 +17,7 @@ const RulesModal = ({ onClose, playSound }) => {
           <div className="rules-title">SCORING COMBINATIONS</div>
           <ul className="rules-list">
             <li><strong>🎉 4-5-6 INSTANT WIN:</strong> The best roll! You immediately win the round, no matter what. The round ends instantly!</li>
-            <li><strong>⚡ TRIPS (e.g., 6-6-6):</strong> All three dice match. Deal massive damage equal to BASE DMG × trip value. Higher trips are better!</li>
+            <li><strong>⚡ TRIPS (e.g., 6-6-6):</strong> All three dice match. Deal massive damage equal to BASE DMG × (trip value + 6 bonus). Trips always score higher than points!</li>
             <li><strong>🎯 POINT (e.g., 4-5-5):</strong> Two dice match, one is different. The singleton is your "point." Deal BASE DMG × point value.</li>
             <li><strong>💀 1-2-3 INSTANT LOSS:</strong> The worst roll! You immediately lose the round. The round ends instantly - nothing can save you!</li>
             <li><strong>🔄 NO SCORE (e.g., 1-3-5):</strong> No matching dice and not 1-2-3 or 4-5-6. Both you and enemy automatically reroll FOR FREE until you get a valid combination. This does NOT use your manual rerolls!</li>
