@@ -149,6 +149,7 @@ const Game = () => {
   };
 
   const handleAttack = () => {
+    commitWildDie();
     const { rollResult } = combat;
     if (!rollResult) return;
     
@@ -190,6 +191,7 @@ const Game = () => {
   };
 
   const handleDefend = () => {
+    commitWildDie();
     const { rollResult } = combat;
     if (!rollResult) return;
     
@@ -226,6 +228,7 @@ const Game = () => {
 
   const handleReroll = () => {
     if (combat.combat.rerollsLeft > 0) {
+      commitWildDie();
       playSound('reroll');
       const newDice = rollDice(
         3,
@@ -246,13 +249,49 @@ const Game = () => {
   };
 
   const handleWildDie = (index, value) => {
-    if (combat.wildDieUsed < gameState.powerups.wildDie) {
-      const newDice = [...combat.dice];
-      newDice[index] = value;
-      combat.setDice(newDice);
-      combat.setRollResult(analyzeCeeloRoll(newDice, gameState.powerups.pointBoost, false, false));
+    const pending = combat.pendingWildDie;
+    const chargesLeft = gameState.powerups.wildDie - combat.wildDieUsed;
+
+    // If clicking a different die than the one being edited
+    if (pending && pending.index !== index) {
+      // Need a new charge to edit a second die
+      if (chargesLeft <= (pending ? 1 : 0)) return;
+    }
+
+    // If no pending edit, need at least 1 charge
+    if (!pending && chargesLeft <= 0) return;
+
+    const newDice = [...combat.dice];
+    newDice[index] = value;
+    combat.setDice(newDice);
+    const newResult = analyzeCeeloRoll(newDice, gameState.powerups.pointBoost, false, false);
+    combat.setRollResult(newResult);
+
+    // Track which die is being edited (store original value on first click)
+    if (!pending || pending.index !== index) {
+      // Starting a new die edit — if there was a previous pending edit, commit it
+      if (pending) {
+        combat.setWildDieUsed(prev => prev + 1);
+        addLog(`🎯 WILD DIE locked on die ${pending.index + 1}`);
+      }
+      combat.setPendingWildDie({ index, originalValue: combat.dice[index] });
+    } else {
+      // Same die, just cycling — update pending but don't consume charge
+      combat.setPendingWildDie({ ...pending });
+    }
+
+    // If Wild Die turned a no-score into a valid roll, show action buttons
+    if (newResult.type !== 'none' && !combat.playerHasRolled) {
+      combat.setPlayerHasRolled(true);
+      combat.setCanPlayerRoll(false);
+    }
+  };
+
+  // Commits any pending wild die edit (called before actions)
+  const commitWildDie = () => {
+    if (combat.pendingWildDie) {
       combat.setWildDieUsed(prev => prev + 1);
-      addLog(`🎯 WILD DIE! Set to ${value}`);
+      combat.setPendingWildDie(null);
     }
   };
 
@@ -347,6 +386,7 @@ const Game = () => {
           canPlayerRoll={combat.canPlayerRoll}
           playerHasRolled={combat.playerHasRolled}
           wildDieUsed={combat.wildDieUsed}
+          pendingWildDie={combat.pendingWildDie}
           onRollDice={handlePlayerRollDice}
           onAttack={handleAttack}
           onDefend={handleDefend}

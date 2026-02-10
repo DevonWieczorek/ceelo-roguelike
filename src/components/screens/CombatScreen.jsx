@@ -14,6 +14,7 @@ const CombatScreen = ({
   canPlayerRoll,
   playerHasRolled,
   wildDieUsed,
+  pendingWildDie,
   onRollDice,
   onAttack,
   onDefend,
@@ -90,7 +91,10 @@ const CombatScreen = ({
                     dice.filter(d => d === value).length === 1
                   }
                   onClick={() => onWildDie(idx, (value % 6) + 1)}
-                  clickable={playerHasRolled && wildDieUsed < gameState.powerups.wildDie}
+                  clickable={dice.length > 0 && (
+                    (pendingWildDie && pendingWildDie.index === idx) ||
+                    (wildDieUsed + (pendingWildDie ? 1 : 0)) < gameState.powerups.wildDie
+                  )}
                 />
               ))}
             </div>
@@ -130,7 +134,7 @@ const CombatScreen = ({
         <StatBox label="REROLLS" value={combat.rerollsLeft} icon="🔄" />
         <StatBox 
           label="WILD DIE" 
-          value={gameState.powerups.wildDie - wildDieUsed} 
+          value={gameState.powerups.wildDie - wildDieUsed - (pendingWildDie ? 1 : 0)} 
           icon="🎯" 
         />
         <StatBox 

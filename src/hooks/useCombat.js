@@ -12,6 +12,7 @@ export const useCombat = (gameState, playSound, addLog) => {
   const [playerHasRolled, setPlayerHasRolled] = useState(false);
   const [usedAceSaver, setUsedAceSaver] = useState(false);
   const [wildDieUsed, setWildDieUsed] = useState(0);
+  const [pendingWildDie, setPendingWildDie] = useState(null); // { index, originalValue }
 
   const performEnemyRoll = (onComplete) => {
     const enemyRoll = rollDice(3, false, false);
@@ -106,6 +107,7 @@ export const useCombat = (gameState, playSound, addLog) => {
     setPlayerHasRolled(false);
     setUsedAceSaver(false);
     setWildDieUsed(0);
+    setPendingWildDie(null);
   };
 
   return {
@@ -125,6 +127,8 @@ export const useCombat = (gameState, playSound, addLog) => {
     setUsedAceSaver,
     wildDieUsed,
     setWildDieUsed,
+    pendingWildDie,
+    setPendingWildDie,
     executeEnemyTurn,
     executePlayerTurn,
     performEnemyRoll,
