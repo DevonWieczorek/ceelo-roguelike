@@ -7,6 +7,7 @@ export const GAME_CONFIG = {
   MAX_ROUNDS: 5,
   ENEMY_DAMAGE_MULTIPLIER: 0.8,
   AUTO_REROLL_LIMIT: 999,
+  TRIPS_BONUS: 6,
 };
 
 // Initial powerup prices
