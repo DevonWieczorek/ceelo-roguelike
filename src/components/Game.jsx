@@ -182,6 +182,8 @@ const Game = () => {
         combat.executeEnemyTurn((result) => {
           if (result === 'defeat') {
             handleDefeat();
+          } else if (result === 'victory') {
+            handleVictory();
           } else {
             combat.executePlayerTurn();
           }
@@ -194,9 +196,9 @@ const Game = () => {
     commitWildDie();
     const { rollResult } = combat;
     if (!rollResult) return;
-    
+
     let heal = 0;
-    
+
     if (rollResult.type === 'trips') {
       heal = rollResult.value * 5;
       addLog(`🛡️ TRIPS SHIELD! +${heal} HP!`);
@@ -206,19 +208,21 @@ const Game = () => {
       addLog(`🛡️ Point defense! +${heal} HP!`);
       playSound('defend');
     }
-    
+
     combat.setCombat(prev => ({ ...prev, playerHP: prev.playerHP + heal }));
-    
+
     // Enemy's turn
     setTimeout(() => {
       combat.setPlayerHasRolled(false);
       combat.setDice([]);
       combat.setRollResult(null);
       combat.setCanPlayerRoll(false);
-      
+
       combat.executeEnemyTurn((result) => {
         if (result === 'defeat') {
           handleDefeat();
+        } else if (result === 'victory') {
+          handleVictory();
         } else {
           combat.executePlayerTurn();
         }
@@ -278,6 +282,19 @@ const Game = () => {
     } else {
       // Same die, just cycling — update pending but don't consume charge
       combat.setPendingWildDie({ ...pending });
+    }
+
+    // Check for instant outcomes from Wild Die
+    if (newResult.type === 'instant_win') {
+      combat.setPlayerHasRolled(true);
+      combat.setCanPlayerRoll(false);
+      commitWildDie();
+      setTimeout(() => {
+        playSound('victory');
+        addLog('🎉 4-5-6! INSTANT VICTORY!');
+        handleVictory();
+      }, 1000);
+      return;
     }
 
     // If Wild Die turned a no-score into a valid roll, show action buttons
