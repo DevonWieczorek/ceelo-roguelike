@@ -4,7 +4,7 @@ export const GAME_CONFIG = {
   STARTING_HP: 50,
   STARTING_DAMAGE: 5,
   STARTING_REROLLS: 1,
-  MAX_ROUNDS: 5,
+  MAX_ROUNDS: 10,
   ENEMY_DAMAGE_MULTIPLIER: 0.8,
   TRIPS_BONUS: 6,
 };
@@ -92,7 +92,7 @@ export const POWERUP_INFO = {
 
 // Price scaling configuration
 export const PRICE_SCALING = {
-  GLOBAL_INFLATION: 1.02, // 2% per purchase
+  GLOBAL_INFLATION: 1.01, // 1% per purchase
   STACKABLE_INCREASE: 1.4, // 40% per purchase
   ONE_TIME_INCREASE: 1.5, // 50% per purchase
 };
@@ -100,14 +100,14 @@ export const PRICE_SCALING = {
 // Victory rewards formulas
 export const getVictoryRewards = (round) => ({
   gold: 15 + round * 5,
-  hp: 3 + Math.floor(round / 2),
-  damage: 2 + Math.floor(round / 2),
+  hp: 3 + round,
+  damage: 2 + round,
 });
 
 // Enemy HP formula
 export const getEnemyHP = (round, playerBaseHP) => {
   const baseEnemyHP = 15 + round * 5;
-  const roundScaling = round * round * 2;
+  const roundScaling = Math.floor(Math.pow(round, 1.5) * 3);
   const playerScaling = Math.floor((playerBaseHP - GAME_CONFIG.STARTING_HP) / 2);
   return baseEnemyHP + roundScaling + playerScaling;
 };

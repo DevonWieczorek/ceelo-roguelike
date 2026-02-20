@@ -9,9 +9,8 @@ All components have been created and the game is ready to run!
 ## Quick Start
 
 ```bash
-cd ceelo-roguelike-app
-npm install
-npm run dev
+yarn install
+yarn dev
 ```
 
 Open `http://localhost:3000` in your browser.
@@ -19,9 +18,8 @@ Open `http://localhost:3000` in your browser.
 ## File Structure
 
 ```
-ceelo-roguelike-app/
-├── public/
-│   └── index.html              ✅ HTML entry point
+ceelo-roguelike/
+├── index.html                    ✅ HTML entry point (project root, required by Vite)
 ├── src/
 │   ├── components/
 │   │   ├── Game.jsx            ✅ Main game orchestrator
@@ -76,7 +74,7 @@ Each component has its own CSS file co-located with it:
 **Screen Styles:**
 - `MenuScreen.css` - Powerup badge grid
 - `PreRoundScreen.css` - Roll result styling
-- `CombatScreen.css` - Dice container and action buttons
+- `CombatScreen.css` - Responsive sidebar layout, dice container, action buttons, mobile compact views
 - `ShopScreen.css` - Shop grid layout
 - `VictoryScreen.css` - Victory powerup display
 - `DefeatScreen.css` - Defeat powerup display
@@ -111,9 +109,10 @@ Each component has its own CSS file co-located with it:
 - Use consumable items (First Strike)
 - Begin combat
 
-**CombatScreen** - Combat interface  
-- Props: `gameState`, `combat`, `dice`, `enemyDice`, `rollResult`, `enemyRollResult`, `canPlayerRoll`, `playerHasRolled`, `wildDieUsed`, handlers
-- Shows HP bars, dice, roll results
+**CombatScreen** - Combat interface
+- Props: `gameState`, `combat`, `dice`, `enemyDice`, `rollResult`, `enemyRollResult`, `canPlayerRoll`, `playerHasRolled`, `wildDieUsed`, `pendingWildDie`, handlers
+- Desktop: 2-column layout with right sidebar (HP bars, stats) + main area (dice, actions)
+- Mobile: compact stacked layout with inline HP bars, collapsible enemy roll, and inventory below action buttons
 - Roll dice, attack, defend, reroll
 - Wild Die clicking
 
@@ -138,8 +137,9 @@ Each component has its own CSS file co-located with it:
 ### UI Components
 
 **Dice** - Individual die
-- Props: `value`, `type`, `isPointDie`, `onClick`, `clickable`
+- Props: `value`, `type`, `isPointDie`, `isPairDie`, `onClick`, `clickable`
 - Styled based on roll type
+- Point die renders larger, pair dice render smaller
 - Clickable for Wild Die powerup
 
 **HPBar** - Health bar
@@ -233,9 +233,10 @@ Each component has its own CSS file co-located with it:
 ### Available Scripts
 
 ```bash
-npm run dev      # Start development server (localhost:3000)
-npm run build    # Build for production
-npm run preview  # Preview production build
+yarn dev         # Start development server
+yarn build       # Build for production
+yarn preview     # Preview production build
+yarn deploy      # Deploy to GitHub Pages
 ```
 
 ### Adding New Powerups
@@ -266,11 +267,11 @@ npm run preview  # Preview production build
 
 ## Differences from Original
 
-### Same Gameplay
-- All game mechanics identical
-- Same powerups and economy
-- Same combat system
-- Same visual style
+### Evolved Gameplay
+- Core dice mechanics preserved
+- Same powerups, rebalanced economy (see Balance Changes)
+- Extended from 5 to 10 rounds
+- Responsive layout for desktop and mobile
 
 ### New Architecture
 - 30+ separate files vs 1 file
@@ -279,12 +280,19 @@ npm run preview  # Preview production build
 - Component-based UI
 - Vite build system
 
+## Balance Changes (10-Round Update)
+
+The game was extended from 5 to 10 rounds with the following rebalancing:
+
+- **Enemy HP scaling softened**: Changed from quadratic (`round^2 * 2`) to sub-quadratic (`round^1.5 * 3`) so late-round enemies are challenging but not insurmountable
+- **Victory rewards improved**: HP and damage rewards now scale linearly with round (`2 + round` DMG, `3 + round` HP) instead of half-round, so the player can keep pace with enemy scaling
+- **Shop inflation reduced**: Global price inflation dropped from 2% to 1% per purchase so the shop stays relevant in later rounds
+
 ## Next Steps
 
 ### Possible Enhancements
 1. **Animations** - Damage numbers, dice rolling
-2. **Mobile Support** - Responsive design, touch controls
-3. **Persistence** - localStorage for save files
+2. **Persistence** - localStorage for save files
 4. **More Powerups** - Expand the shop
 5. **Enemy Types** - Different enemy abilities
 6. **Achievements** - Track player progress
@@ -311,4 +319,4 @@ Same as original single-file version.
 
 **Ready to Play!** 🎲
 
-Run `npm install && npm run dev` and start rolling!
+Run `yarn install && yarn dev` and start rolling!
