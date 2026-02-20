@@ -15,6 +15,12 @@ export const globalStyles = `
     margin: 0 auto;
     padding: 20px;
   }
+
+  @media (min-width: 768px) {
+    .container {
+      max-width: 1250px;
+    }
+  }
   
   .pixel-border {
     border: 4px solid #0f3460;
@@ -33,6 +39,10 @@ export const globalStyles = `
     font-size: 10px;
     cursor: pointer;
     position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     box-shadow: 
       inset -4px -4px 0 0 rgba(0,0,0,0.2),
       inset 4px 4px 0 0 rgba(255,255,255,0.2),
@@ -108,7 +118,7 @@ export const globalStyles = `
   
   .status-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
     margin: 20px 0;
   }

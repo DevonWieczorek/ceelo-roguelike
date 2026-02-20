@@ -28,6 +28,15 @@
 .die.point-die {
   background: linear-gradient(135deg, #3498db, #2980b9);
   box-shadow: 0 0 20px rgba(52, 152, 219, 0.6);
+  width: 80px;
+  height: 80px;
+  font-size: 32px;
+}
+
+.die.pair-die {
+  width: 45px;
+  height: 45px;
+  font-size: 18px;
 }
 
 @keyframes pulse {

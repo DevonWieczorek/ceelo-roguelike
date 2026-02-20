@@ -1,3 +1,13 @@
+.menu-card.card-8bit {
+  padding: 40px 20px;
+}
+
+@media (min-width: 768px) {
+  .menu-card.card-8bit {
+    padding: 30px 120px;
+  }
+}
+
 .powerup-list {
   display: flex;
   flex-wrap: wrap;

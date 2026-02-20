@@ -3,7 +3,7 @@ import './MenuScreen.css';
 
 const MenuScreen = ({ gameState, activePowerups, onStartRound, onVisitShop }) => {
   return (
-    <div className="card-8bit pixel-border">
+    <div className="card-8bit pixel-border menu-card">
       <h1 className="title">🎲 CEE-LO ROGUELIKE</h1>
       <p className="subtitle">Tactical Dice Combat</p>
 

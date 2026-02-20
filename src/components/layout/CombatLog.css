@@ -6,6 +6,12 @@
   overflow-y: auto;
 }
 
+@media (min-width: 768px) {
+  .combat-log {
+    padding: 15px 25px;
+  }
+}
+
 .log-entry {
   font-size: 8px;
   padding: 5px 0;

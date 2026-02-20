@@ -1,13 +1,114 @@
+.sidebar-round-title {
+  font-size: 14px;
+  text-align: center;
+  color: #fff;
+  text-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+  margin: 0 0 20px 0;
+}
+
 .dice-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 15px;
   margin: 20px 0;
 }
 
 .action-buttons {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin: 20px 0;
+}
+
+.action-buttons > button {
+  flex: 1 1 120px;
+}
+
+.enemy-roll-compact {
+  display: none;
+  font-size: 10px;
+  text-align: center;
+  padding: 8px 12px;
+  margin-top: 10px;
+}
+
+/* Desktop: 2-column grid layout */
+@media (min-width: 768px) {
+  .combat-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 40px;
+    align-items: stretch;
+  }
+
+  .combat-main {
+    min-width: 0;
+  }
+
+  .combat-sidebar .status-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .combat-mobile-status {
+    display: none;
+  }
+
+  .combat-mobile-stats {
+    display: none;
+  }
+}
+
+/* Mobile: stacked single column */
+@media (max-width: 767px) {
+  .combat-layout {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .combat-sidebar {
+    display: none;
+  }
+
+  .enemy-roll-full.hide-on-mobile {
+    display: none;
+  }
+
+  .enemy-roll-compact {
+    display: block;
+  }
+
+  .combat-mobile-status {
+    margin-bottom: 10px;
+  }
+
+  .combat-mobile-hp {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .action-buttons > button {
+    flex-basis: 100%;
+  }
+
+  .combat-mobile-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .combat-mobile-stats .stat-box {
+    padding: 8px;
+  }
+
+  .combat-mobile-stats .stat-label {
+    font-size: 6px;
+    margin-bottom: 4px;
+  }
+
+  .combat-mobile-stats .stat-value {
+    font-size: 11px;
+  }
 }

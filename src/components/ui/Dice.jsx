@@ -1,12 +1,13 @@
 import './Dice.css';
 
-const Dice = ({ value, type, isPointDie, onClick, clickable }) => {
+const Dice = ({ value, type, isPointDie, isPairDie, onClick, clickable }) => {
   const getClassNames = () => {
     let classes = 'die pixel-border';
     if (type === 'trips') classes += ' trips';
     if (type === 'cursed') classes += ' cursed';
     if (type === 'instant_win') classes += ' instant-win';
     if (isPointDie) classes += ' point-die';
+    if (isPairDie) classes += ' pair-die';
     return classes;
   };
 
