@@ -1,7 +1,7 @@
 import StatBox from '../ui/StatBox';
 import './VictoryScreen.css';
 
-const VictoryScreen = ({ gameState, activePowerups, onNewRun, onShop, playSound }) => {
+const VictoryScreen = ({ gameState, activePowerups, onNewRun, playSound }) => {
   return (
     <div className="card-8bit pixel-border">
       <h1 className="title" style={{ color: '#2ecc71' }}>🎉 VICTORY!</h1>
@@ -28,23 +28,14 @@ const VictoryScreen = ({ gameState, activePowerups, onNewRun, onShop, playSound 
       )}
 
       <div className="action-buttons">
-        <button 
-          className="button-8bit button-success" 
-          onClick={() => { 
-            playSound('click'); 
-            onNewRun(); 
+        <button
+          className="button-8bit button-success"
+          onClick={() => {
+            playSound('click');
+            onNewRun();
           }}
         >
           🎲 NEW RUN
-        </button>
-        <button 
-          className="button-8bit" 
-          onClick={() => { 
-            playSound('click'); 
-            onShop(); 
-          }}
-        >
-          📋 SHOP
         </button>
       </div>
     </div>

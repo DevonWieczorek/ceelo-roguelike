@@ -447,7 +447,6 @@ const Game = () => {
           gameState={gameState}
           activePowerups={activePowerups}
           onNewRun={handleRestart}
-          onShop={() => setScreen('shop')}
           playSound={playSound}
         />
       )}
@@ -457,10 +456,7 @@ const Game = () => {
           gameState={gameState}
           activePowerups={activePowerups}
           onNewRun={handleRestart}
-          onMainMenu={() => {
-            handleRestart();
-            setScreen('menu');
-          }}
+          onMainMenu={handleRestart}
           playSound={playSound}
         />
       )}
