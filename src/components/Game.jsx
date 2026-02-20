@@ -248,7 +248,28 @@ const Game = () => {
       combat.setDice(newDice);
       combat.setRollResult(result);
       combat.setCombat(prev => ({ ...prev, rerollsLeft: prev.rerollsLeft - 1 }));
-      addLog('🔄 Manual reroll!');
+      addLog(`🔄 Manual reroll: ${newDice.join('-')} - ${result.display}`);
+
+      if (result.type === 'instant_win') {
+        setTimeout(() => {
+          playSound('victory');
+          addLog('🎉 4-5-6! INSTANT VICTORY!');
+          handleVictory();
+        }, 1000);
+      } else if (result.type === 'cursed') {
+        setTimeout(() => {
+          playSound('cursed');
+          addLog('💀 1-2-3! INSTANT DEFEAT!');
+          handleDefeat();
+        }, 1000);
+      } else if (result.type === 'none') {
+        // No score after reroll — let player roll again for free
+        addLog('🔄 No score - rolling again (free)');
+        combat.setPlayerHasRolled(false);
+        setTimeout(() => {
+          combat.setCanPlayerRoll(true);
+        }, 800);
+      }
     }
   };
 
