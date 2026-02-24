@@ -1,42 +1,46 @@
 .die {
   width: 60px;
   height: 60px;
-  background: #0f3460;
+  background: var(--color-surface-deep);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: var(--font-xl);
   font-weight: bold;
-  transition: all 0.3s;
+  transition: var(--transition-normal);
 }
 
 .die.trips {
-  background: linear-gradient(135deg, #f39c12, #e67e22);
+  background: linear-gradient(135deg, var(--color-warning), var(--color-warning-dark));
   animation: pulse 0.5s ease-in-out;
 }
 
 .die.cursed {
-  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  background: linear-gradient(135deg, var(--color-error), var(--color-error-dark));
   animation: shake 0.3s ease-in-out;
 }
 
 .die.instant-win {
-  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  background: linear-gradient(135deg, var(--color-success), var(--color-success-dark));
   animation: glow 0.5s ease-in-out;
 }
 
 .die.point-die {
-  background: linear-gradient(135deg, #3498db, #2980b9);
+  background: linear-gradient(135deg, var(--color-point), var(--color-point-dark));
   box-shadow: 0 0 20px rgba(52, 152, 219, 0.6);
   width: 80px;
   height: 80px;
-  font-size: 32px;
+  font-size: var(--font-2xl);
 }
 
 .die.pair-die {
   width: 45px;
   height: 45px;
   font-size: 18px;
+}
+
+.die-clickable {
+  cursor: pointer;
 }
 
 @keyframes pulse {

@@ -15,7 +15,7 @@ const MenuScreen = ({ gameState, activePowerups, onStartRound, onVisitShop }) =>
       </div>
 
       {activePowerups.length > 0 && (
-        <div style={{ marginTop: '20px' }}>
+        <div className="powerups-section">
           <div className="stat-label">ACTIVE POWERUPS</div>
           <div className="powerup-list">
             {activePowerups.map(p => (

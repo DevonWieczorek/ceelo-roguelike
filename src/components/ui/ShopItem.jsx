@@ -4,7 +4,7 @@ const ShopItem = ({ icon, name, count, description, price, onBuy, canAfford, but
   return (
     <div className="shop-item pixel-border">
       <div>
-        <div style={{ fontSize: '11px' }}>
+        <div className="shop-item-name">
           {icon} {name.toUpperCase()} ({count})
         </div>
         <div className="stat-label">{description}</div>

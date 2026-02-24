@@ -1,13 +1,17 @@
 .shop-item {
-  background: #0f3460;
-  padding: 15px;
+  background: var(--color-surface-deep);
+  padding: var(--space-md);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px 0;
+  margin: var(--space-sm) 0;
 }
 
 .shop-item button {
-  margin-left: 15px;
+  margin-left: var(--space-md);
   flex-shrink: 0;
+}
+
+.shop-item-name {
+  font-size: 11px;
 }

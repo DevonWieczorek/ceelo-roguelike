@@ -16,7 +16,7 @@ const ShopScreen = ({ gameState, onBuyPowerup, onContinue, playSound }) => {
           const price = gameState.prices[key];
           const count = gameState.powerups[key];
           const canAfford = gameState.gold >= price;
-          
+
           return (
             <ShopItem
               key={key}
@@ -36,12 +36,12 @@ const ShopScreen = ({ gameState, onBuyPowerup, onContinue, playSound }) => {
         })}
       </div>
 
-      <div className="action-buttons" style={{ marginTop: '20px' }}>
-        <button 
-          className="button-8bit button-success" 
-          onClick={() => { 
-            playSound('click'); 
-            onContinue(); 
+      <div className="action-buttons shop-action-buttons">
+        <button
+          className="button-8bit button-success"
+          onClick={() => {
+            playSound('click');
+            onContinue();
           }}
         >
           CONTINUE

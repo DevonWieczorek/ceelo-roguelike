@@ -4,14 +4,14 @@ import './DefeatScreen.css';
 const DefeatScreen = ({ gameState, activePowerups, onNewRun, onMainMenu, playSound }) => {
   return (
     <div className="card-8bit pixel-border">
-      <h1 className="title" style={{ color: '#e94560' }}>💀 DEFEATED</h1>
+      <h1 className="title">💀 DEFEATED</h1>
       <p className="subtitle">Your journey ends at Round {gameState.round}</p>
-      
+
       <div className="status-grid">
-        <StatBox 
-          label="ROUNDS SURVIVED" 
-          value={gameState.round - 1} 
-          icon="📍" 
+        <StatBox
+          label="ROUNDS SURVIVED"
+          value={gameState.round - 1}
+          icon="📍"
         />
         <StatBox label="GOLD EARNED" value={gameState.gold} icon="💰" special="gold" />
         <StatBox label="FINAL HP" value={gameState.baseHP} icon="❤️" />
@@ -31,21 +31,21 @@ const DefeatScreen = ({ gameState, activePowerups, onNewRun, onMainMenu, playSou
         </div>
       )}
 
-      <div className="action-buttons" style={{ marginTop: '30px' }}>
-        <button 
-          className="button-8bit button-success" 
-          onClick={() => { 
-            playSound('click'); 
-            onNewRun(); 
+      <div className="action-buttons defeat-action-buttons">
+        <button
+          className="button-8bit button-success"
+          onClick={() => {
+            playSound('click');
+            onNewRun();
           }}
         >
           🎲 NEW RUN
         </button>
-        <button 
-          className="button-8bit" 
-          onClick={() => { 
-            playSound('click'); 
-            onMainMenu(); 
+        <button
+          className="button-8bit"
+          onClick={() => {
+            playSound('click');
+            onMainMenu();
           }}
         >
           📋 MAIN MENU

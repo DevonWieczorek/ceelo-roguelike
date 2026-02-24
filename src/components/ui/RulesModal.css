@@ -9,33 +9,33 @@
   align-items: center;
   justify-content: center;
   z-index: 2000;
-  padding: 20px;
+  padding: var(--space-lg);
 }
 
 .modal-content {
   max-width: 800px;
   max-height: 90vh;
   overflow-y: auto;
-  background: #16213e;
-  padding: 30px;
+  background: var(--color-surface);
+  padding: var(--space-xl);
 }
 
 .rules-section {
-  background: #0f3460;
-  padding: 15px;
-  margin: 15px 0;
+  background: var(--color-surface-deep);
+  padding: var(--space-md);
+  margin: var(--space-md) 0;
 }
 
 .rules-title {
   font-size: 12px;
-  color: #e94560;
-  margin-bottom: 10px;
+  color: var(--color-danger);
+  margin-bottom: var(--space-sm);
 }
 
 .rules-text {
-  font-size: 8px;
+  font-size: var(--font-xs);
   line-height: 1.6;
-  color: #ccc;
+  color: var(--color-text-muted);
 }
 
 .rules-list {
@@ -45,10 +45,10 @@
 }
 
 .rules-list li {
-  font-size: 8px;
+  font-size: var(--font-xs);
   line-height: 1.8;
-  margin-bottom: 8px;
-  padding-left: 15px;
+  margin-bottom: var(--space-xs);
+  padding-left: var(--space-md);
   position: relative;
 }
 
@@ -56,5 +56,11 @@
   content: "▸";
   position: absolute;
   left: 0;
-  color: #e94560;
+  color: var(--color-danger);
+}
+
+.rules-tip {
+  margin-top: var(--space-sm);
+  font-size: var(--font-2xs);
+  color: var(--color-warning);
 }

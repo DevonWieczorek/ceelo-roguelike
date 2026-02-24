@@ -1,21 +1,60 @@
 .roll-result {
-  background: #0f3460;
-  padding: 15px;
+  background: var(--color-surface-deep);
+  padding: var(--space-md);
   text-align: center;
-  margin: 10px 0;
+  margin: var(--space-sm) 0;
 }
 
 .roll-result.trips {
   background: linear-gradient(135deg, rgba(243, 156, 18, 0.2), rgba(230, 126, 34, 0.2));
-  border-color: #f39c12;
+  border-color: var(--color-warning);
 }
 
 .roll-result.cursed {
   background: linear-gradient(135deg, rgba(231, 76, 60, 0.2), rgba(192, 57, 43, 0.2));
-  border-color: #e74c3c;
+  border-color: var(--color-error);
 }
 
 .roll-result.instant_win {
   background: linear-gradient(135deg, rgba(46, 204, 113, 0.2), rgba(39, 174, 96, 0.2));
-  border-color: #2ecc71;
+  border-color: var(--color-success);
+}
+
+.consumables-section {
+  margin-top: var(--space-lg);
+}
+
+.consumable-content {
+  margin-top: var(--space-sm);
+}
+
+.consumable-detail {
+  padding: var(--space-sm);
+}
+
+.consumable-title {
+  font-size: 11px;
+  margin-bottom: 5px;
+}
+
+.consumable-desc {
+  margin-bottom: var(--space-sm);
+}
+
+.button-consumable {
+  font-size: var(--font-sm);
+}
+
+.consumable-empty {
+  font-size: var(--font-sm);
+  padding: var(--space-sm);
+  color: var(--color-text-label);
+}
+
+.preround-action-buttons {
+  margin-top: var(--space-xl);
+}
+
+.button-begin {
+  font-size: 12px;
 }

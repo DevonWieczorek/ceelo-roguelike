@@ -1,25 +1,25 @@
 .hp-bar {
-  background: #0f3460;
+  background: var(--color-surface-deep);
   height: 30px;
   position: relative;
   overflow: hidden;
-  margin: 10px 0;
+  margin: var(--space-sm) 0;
 }
 
 .hp-fill {
   height: 100%;
-  transition: width 0.3s ease;
+  transition: var(--transition-hp);
   position: absolute;
   left: 0;
   top: 0;
 }
 
 .hp-fill.player {
-  background: linear-gradient(90deg, #2ecc71, #27ae60);
+  background: linear-gradient(90deg, var(--color-success), var(--color-success-dark));
 }
 
 .hp-fill.enemy {
-  background: linear-gradient(90deg, #e94560, #c0392b);
+  background: linear-gradient(90deg, var(--color-danger), var(--color-error-dark));
 }
 
 .hp-text {
@@ -27,6 +27,6 @@
   z-index: 1;
   line-height: 30px;
   text-align: center;
-  font-size: 10px;
-  text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+  font-size: var(--font-sm);
+  text-shadow: var(--shadow-text-hp);
 }

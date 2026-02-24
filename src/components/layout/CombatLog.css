@@ -1,44 +1,44 @@
 .combat-log {
-  background: #0f3460;
-  padding: 15px;
-  margin: 20px 0;
+  background: var(--color-surface-deep);
+  padding: var(--space-md);
+  margin: var(--space-lg) 0;
   max-height: 200px;
   overflow-y: auto;
 }
 
 @media (min-width: 768px) {
   .combat-log {
-    padding: 15px 25px;
+    padding: var(--space-md) 25px;
   }
 }
 
 .log-entry {
-  font-size: 8px;
+  font-size: var(--font-xs);
   padding: 5px 0;
-  border-bottom: 1px solid #16213e;
+  border-bottom: 1px solid var(--color-surface);
 }
 
 .log-entry.log-attack {
-  color: #e74c3c;
+  color: var(--color-error);
 }
 
 .log-entry.log-defend {
-  color: #2ecc71;
+  color: var(--color-success);
 }
 
 .log-entry.log-gold {
-  color: #f39c12;
+  color: var(--color-warning);
 }
 
 .log-entry.log-victory {
-  color: #2ecc71;
+  color: var(--color-success);
   font-weight: bold;
 }
 
 .log-entry.log-trips {
-  color: #f39c12;
+  color: var(--color-warning);
 }
 
 .log-entry.log-cursed {
-  color: #e74c3c;
+  color: var(--color-error);
 }

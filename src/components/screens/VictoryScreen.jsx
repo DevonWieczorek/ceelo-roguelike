@@ -4,9 +4,9 @@ import './VictoryScreen.css';
 const VictoryScreen = ({ gameState, activePowerups, onNewRun, playSound }) => {
   return (
     <div className="card-8bit pixel-border">
-      <h1 className="title" style={{ color: '#2ecc71' }}>🎉 VICTORY!</h1>
+      <h1 className="title title-victory">🎉 VICTORY!</h1>
       <p className="subtitle">You conquered all {gameState.maxRounds} rounds!</p>
-      
+
       <div className="status-grid">
         <StatBox label="FINAL GOLD" value={gameState.gold} icon="💰" special="gold" />
         <StatBox label="FINAL HP" value={gameState.baseHP} icon="❤️" />

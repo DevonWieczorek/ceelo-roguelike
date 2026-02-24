@@ -1,6 +1,10 @@
 .shop-grid {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin: 20px 0;
+  gap: var(--space-sm);
+  margin: var(--space-lg) 0;
+}
+
+.shop-action-buttons {
+  margin-top: var(--space-lg);
 }

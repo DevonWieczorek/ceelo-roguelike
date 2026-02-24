@@ -51,7 +51,7 @@ const RulesModal = ({ onClose, playSound }) => {
             <li><strong>⚡ FIRST STRIKE (20g):</strong> Consumable item - use before a round to go first that round. Stackable!</li>
             <li><strong>🎯 WILD DIE (25g):</strong> Click a die to set its value once per round. Stackable!</li>
           </ul>
-          <div className="rules-text" style={{ marginTop: '10px', fontSize: '7px', color: '#f39c12' }}>
+          <div className="rules-tip">
             💡 PRICE SCALING: All items increase 2% per total purchase. Each powerup increases 50% when you buy it again (40% for stackables). You can buy multiples of everything!
           </div>
         </div>

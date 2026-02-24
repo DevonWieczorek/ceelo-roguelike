@@ -48,7 +48,7 @@ const CombatScreen = ({
 
         {/* Enemy Dice Display — always full on desktop, full on mobile until player rolls */}
         {enemyRollResult && (
-          <div className={`enemy-roll-full${playerHasRolled ? ' hide-on-mobile' : ''}`} style={{ marginTop: '20px' }}>
+          <div className={`enemy-roll-full enemy-roll-margin${playerHasRolled ? ' hide-on-mobile' : ''}`}>
             <div className="stat-label">ENEMY ROLL</div>
             <div className="dice-container">
               {enemyDice.map((value, idx) => (
@@ -70,11 +70,11 @@ const CombatScreen = ({
             </div>
 
             <div className={`roll-result pixel-border ${enemyRollResult.type}`}>
-              <div style={{ fontSize: '14px', marginBottom: '5px' }}>
+              <div className="roll-result-display">
                 {enemyRollResult.display}
               </div>
               {(enemyRollResult.type === 'trips' || enemyRollResult.type === 'point') && (
-                <div style={{ fontSize: '8px', color: '#e94560' }}>
+                <div className="roll-result-damage">
                   Enemy Damage: {Math.floor(gameState.baseDamage * GAME_CONFIG.ENEMY_DAMAGE_MULTIPLIER)} × {enemyRollResult.value} = {Math.floor(gameState.baseDamage * GAME_CONFIG.ENEMY_DAMAGE_MULTIPLIER) * enemyRollResult.value}
                 </div>
               )}
@@ -87,7 +87,7 @@ const CombatScreen = ({
           <div className={`enemy-roll-compact roll-result pixel-border ${enemyRollResult.type}`}>
             <span>ENEMY: {enemyRollResult.display}</span>
             {(enemyRollResult.type === 'trips' || enemyRollResult.type === 'point') && (
-              <span style={{ color: '#e94560' }}>
+              <span className="text-danger">
                 {' '}({Math.floor(gameState.baseDamage * GAME_CONFIG.ENEMY_DAMAGE_MULTIPLIER) * enemyRollResult.value} dmg)
               </span>
             )}
@@ -95,7 +95,7 @@ const CombatScreen = ({
         )}
 
         {/* Player Dice Display */}
-        <div style={{ marginTop: '20px' }}>
+        <div className="player-roll-section">
           <div className="stat-label">YOUR ROLL</div>
           {rollResult ? (
             <>
@@ -123,20 +123,20 @@ const CombatScreen = ({
               </div>
 
               <div className={`roll-result pixel-border ${rollResult.type}`} style={{ marginTop: '10px' }}>
-                <div style={{ fontSize: '14px', marginBottom: '5px' }}>
+                <div className="roll-result-display">
                   {rollResult.display}
                 </div>
                 {rollResult.type === 'trips' && (
-                  <div style={{ fontSize: '8px' }}>
+                  <div className="roll-result-detail">
                     Damage: {gameState.baseDamage} × {rollResult.value}{gameState.powerups.doubleDown > 0 ? ' × 2' : ''} = {gameState.baseDamage * rollResult.value * (gameState.powerups.doubleDown > 0 ? 2 : 1)}
                   </div>
                 )}
                 {rollResult.type === 'point' && (
                   <>
-                    <div style={{ fontSize: '8px' }}>
+                    <div className="roll-result-detail">
                       Damage: {gameState.baseDamage} × {rollResult.value} = {gameState.baseDamage * rollResult.value}
                     </div>
-                    <div style={{ fontSize: '8px', marginTop: '5px', color: '#2ecc71' }}>
+                    <div className="roll-result-heal">
                       Heal: {rollResult.value} × 3 = {rollResult.value * 3}
                     </div>
                   </>
@@ -145,7 +145,7 @@ const CombatScreen = ({
             </>
           ) : (
             <div className="roll-result pixel-border">
-              <div style={{ fontSize: '14px', marginBottom: '5px' }}>
+              <div className="roll-result-display">
                 {canPlayerRoll ? '🎲 Ready to roll!' : '⏳ Waiting for enemy...'}
               </div>
             </div>
@@ -156,10 +156,9 @@ const CombatScreen = ({
         <div className="action-buttons">
           {!playerHasRolled && (
             <button
-              className="button-8bit button-success"
+              className="button-8bit button-success button-roll"
               onClick={onRollDice}
               disabled={!canPlayerRoll}
-              style={{ fontSize: '12px', width: '100%', marginBottom: '10px' }}
             >
               🎲 ROLL DICE
             </button>

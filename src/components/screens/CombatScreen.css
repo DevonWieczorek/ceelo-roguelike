@@ -1,24 +1,24 @@
 .sidebar-round-title {
-  font-size: 14px;
+  font-size: var(--font-md);
   text-align: center;
-  color: #fff;
-  text-shadow: 4px 4px 0 rgba(0,0,0,0.3);
-  margin: 0 0 20px 0;
+  color: var(--color-text-light);
+  text-shadow: var(--shadow-text-title);
+  margin: 0 0 var(--space-lg) 0;
 }
 
 .dice-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
-  margin: 20px 0;
+  gap: var(--space-md);
+  margin: var(--space-lg) 0;
 }
 
 .action-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin: 20px 0;
+  gap: var(--space-sm);
+  margin: var(--space-lg) 0;
 }
 
 .action-buttons > button {
@@ -27,10 +27,44 @@
 
 .enemy-roll-compact {
   display: none;
-  font-size: 10px;
+  font-size: var(--font-sm);
   text-align: center;
-  padding: 8px 12px;
-  margin-top: 10px;
+  padding: var(--space-xs) 12px;
+  margin-top: var(--space-sm);
+}
+
+.roll-result-display {
+  font-size: var(--font-md);
+  margin-bottom: 5px;
+}
+
+.roll-result-damage {
+  font-size: var(--font-xs);
+  color: var(--color-danger);
+}
+
+.roll-result-detail {
+  font-size: var(--font-xs);
+}
+
+.roll-result-heal {
+  font-size: var(--font-xs);
+  margin-top: 5px;
+  color: var(--color-success);
+}
+
+.player-roll-section {
+  margin-top: var(--space-lg);
+}
+
+.button-roll {
+  font-size: 12px;
+  width: 100%;
+  margin-bottom: var(--space-sm);
+}
+
+.enemy-roll-margin {
+  margin-top: var(--space-lg);
 }
 
 /* Desktop: 2-column grid layout */
@@ -38,7 +72,7 @@
   .combat-layout {
     display: grid;
     grid-template-columns: 1fr 300px;
-    gap: 40px;
+    gap: var(--space-2xl);
     align-items: stretch;
   }
 
@@ -79,13 +113,13 @@
   }
 
   .combat-mobile-status {
-    margin-bottom: 10px;
+    margin-bottom: var(--space-sm);
   }
 
   .combat-mobile-hp {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: var(--space-sm);
   }
 
   .action-buttons > button {
@@ -95,17 +129,17 @@
   .combat-mobile-stats {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    margin-top: 10px;
+    gap: var(--space-xs);
+    margin-top: var(--space-sm);
   }
 
   .combat-mobile-stats .stat-box {
-    padding: 8px;
+    padding: var(--space-xs);
   }
 
   .combat-mobile-stats .stat-label {
     font-size: 6px;
-    margin-bottom: 4px;
+    margin-bottom: var(--space-2xs);
   }
 
   .combat-mobile-stats .stat-value {

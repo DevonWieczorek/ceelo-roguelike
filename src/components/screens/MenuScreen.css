@@ -1,24 +1,24 @@
 .menu-card.card-8bit {
-  padding: 40px 20px;
+  padding: var(--space-2xl) var(--space-lg);
 }
 
 @media (min-width: 768px) {
   .menu-card.card-8bit {
-    padding: 30px 120px;
+    padding: var(--space-xl) var(--space-3xl);
   }
 }
 
 .powerup-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
 }
 
 .powerup-badge {
-  background: #0f3460;
-  padding: 8px 12px;
-  border-radius: 4px;
-  font-size: 8px;
-  border: 2px solid #16213e;
+  background: var(--color-surface-deep);
+  padding: var(--space-xs) 12px;
+  border-radius: var(--space-2xs);
+  font-size: var(--font-xs);
+  border: 2px solid var(--color-surface);
 }

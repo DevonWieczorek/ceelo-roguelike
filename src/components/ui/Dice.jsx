@@ -8,6 +8,7 @@ const Dice = ({ value, type, isPointDie, isPairDie, onClick, clickable }) => {
     if (type === 'instant_win') classes += ' instant-win';
     if (isPointDie) classes += ' point-die';
     if (isPairDie) classes += ' pair-die';
+    if (clickable) classes += ' die-clickable';
     return classes;
   };
 
@@ -15,7 +16,6 @@ const Dice = ({ value, type, isPointDie, isPairDie, onClick, clickable }) => {
     <div
       className={getClassNames()}
       onClick={clickable ? onClick : undefined}
-      style={{ cursor: clickable ? 'pointer' : 'default' }}
     >
       {value}
     </div>
