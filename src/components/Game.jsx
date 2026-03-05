@@ -531,7 +531,6 @@ const Game = () => {
             gameState={gameState}
             activePowerups={activePowerups}
             onNewRun={handleRestart}
-            onMainMenu={handleRestart}
             playSound={playSound}
           />
         )}

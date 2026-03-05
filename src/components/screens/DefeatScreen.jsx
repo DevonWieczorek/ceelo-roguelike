@@ -1,7 +1,7 @@
 import StatBox from '../ui/StatBox';
 import './DefeatScreen.css';
 
-const DefeatScreen = ({ gameState, activePowerups, onNewRun, onMainMenu, playSound }) => {
+const DefeatScreen = ({ gameState, activePowerups, onNewRun, playSound }) => {
   return (
     <div className="card-8bit pixel-border">
       <h1 className="title">💀 DEFEATED</h1>
@@ -40,15 +40,6 @@ const DefeatScreen = ({ gameState, activePowerups, onNewRun, onMainMenu, playSou
           }}
         >
           🎲 NEW RUN
-        </button>
-        <button
-          className="button-8bit"
-          onClick={() => {
-            playSound('click');
-            onMainMenu();
-          }}
-        >
-          📋 MAIN MENU
         </button>
       </div>
     </div>
