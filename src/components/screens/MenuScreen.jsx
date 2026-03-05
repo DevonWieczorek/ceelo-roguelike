@@ -1,7 +1,7 @@
 import StatBox from '../ui/StatBox';
 import './MenuScreen.css';
 
-const MenuScreen = ({ gameState, activePowerups, onStartRound, onVisitShop }) => {
+const MenuScreen = ({ gameState, activePowerups, runStats, onStartRound, onVisitShop }) => {
   return (
     <div className="card-8bit pixel-border menu-card">
       <h1 className="title">🎲 CEE-LO ROGUELIKE</h1>
@@ -23,6 +23,19 @@ const MenuScreen = ({ gameState, activePowerups, onStartRound, onVisitShop }) =>
                 {p.icon} {p.label}{p.value ? ` (${p.value})` : ''}
               </span>
             ))}
+          </div>
+        </div>
+      )}
+
+      {runStats.totalRuns > 0 && (
+        <div className="run-stats-section">
+          <div className="stat-label">ALL-TIME STATS</div>
+          <div className="run-stats-grid">
+            <StatBox label="RUNS" value={runStats.totalRuns} icon="🎲" />
+            <StatBox label="WINS" value={runStats.wins} icon="🏆" special="gold" />
+            <StatBox label="LOSSES" value={runStats.losses} icon="💀" />
+            <StatBox label="BEST ROUND" value={runStats.highestRound} icon="📍" />
+            <StatBox label="TOTAL GOLD" value={runStats.totalGoldEarned} icon="💰" special="gold" />
           </div>
         </div>
       )}

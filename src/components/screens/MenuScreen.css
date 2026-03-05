@@ -8,6 +8,29 @@
   }
 }
 
+.run-stats-section {
+  margin-top: var(--space-lg);
+  border-top: 2px solid var(--color-surface-deep);
+  padding-top: var(--space-lg);
+}
+
+.run-stats-section .stat-label {
+  text-align: center;
+  margin-bottom: var(--space-sm);
+}
+
+.run-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+}
+
+@media (min-width: 768px) {
+  .run-stats-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
 .powerup-list {
   display: flex;
   flex-wrap: wrap;

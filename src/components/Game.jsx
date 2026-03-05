@@ -3,6 +3,7 @@ import { useGameState } from '../hooks/useGameState';
 import { useAudio } from '../hooks/useAudio';
 import { useCombat } from '../hooks/useCombat';
 import { useLog } from '../hooks/useLog';
+import { useRunStats } from '../hooks/useRunStats';
 import { processPowerupPurchase, getActivePowerups } from '../utils/economy';
 import { getEnemyHP, getVictoryRewards } from '../constants/gameConfig';
 import { rollDice, analyzeCeeloRoll, applyLuckModifiers } from '../utils/diceLogic';
@@ -28,6 +29,7 @@ const Game = () => {
   const { soundEnabled, toggleSound, playSound } = useAudio();
   const { log, addLog, clearLog, logRef } = useLog();
   const combat = useCombat(gameState, playSound, addLog);
+  const { runStats, recordRun } = useRunStats();
   
   const [screen, setScreen] = useState('menu');
   const [showRules, setShowRules] = useState(false);
@@ -417,6 +419,7 @@ const Game = () => {
     addLog(`🎉 Victory! +${rewards.gold}g, +${rewards.hp}HP, +${rewards.damage}DMG`);
 
     if (isFinalRound) {
+      recordRun({ won: true, finalRound: gameState.maxRounds, finalGold: gameState.gold + rewards.gold });
       setScreen('victory');
     } else {
       setScreen('preRound');
@@ -426,6 +429,7 @@ const Game = () => {
   const handleDefeat = () => {
     playSound('defeat');
     addLog('💀 Defeated! Run ended...');
+    recordRun({ won: false, finalRound: Math.max(1, gameState.round - 1), finalGold: gameState.gold });
     setScreen('defeat');
   };
 
@@ -467,6 +471,7 @@ const Game = () => {
           <MenuScreen
             gameState={gameState}
             activePowerups={activePowerups}
+            runStats={runStats}
             onStartRound={handleStartRound}
             onVisitShop={() => setScreen('shop')}
           />
