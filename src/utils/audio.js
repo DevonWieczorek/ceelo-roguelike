@@ -94,6 +94,65 @@ export const playSound = (audioContext, type) => {
       });
       return;
 
+    case SOUND_TYPES.ROUND_VICTORY:
+      // Short 3-note ascending jingle for per-round wins
+      [330, 415, 523].forEach((freq, i) => {
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        osc.frequency.setValueAtTime(freq, now + i * 0.08);
+        gain.gain.setValueAtTime(0.25, now + i * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.08 + 0.18);
+        osc.type = 'square';
+        osc.start(now + i * 0.08);
+        osc.stop(now + i * 0.08 + 0.18);
+      });
+      return;
+
+    case SOUND_TYPES.DEFEAT:
+      // Descending minor arpeggio — slow and sad
+      [494, 392, 311, 247].forEach((freq, i) => {
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        osc.frequency.setValueAtTime(freq, now + i * 0.18);
+        gain.gain.setValueAtTime(0.3, now + i * 0.18);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.18 + 0.35);
+        osc.type = 'sawtooth';
+        osc.start(now + i * 0.18);
+        osc.stop(now + i * 0.18 + 0.35);
+      });
+      return;
+
+    case SOUND_TYPES.ENEMY_ATTACK:
+      // Low menacing thud — heavier than player attack
+      oscillator.frequency.setValueAtTime(180, now);
+      oscillator.frequency.exponentialRampToValueAtTime(60, now + 0.18);
+      gainNode.gain.setValueAtTime(0.4, now);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+      oscillator.type = 'sawtooth';
+      oscillator.start(now);
+      oscillator.stop(now + 0.18);
+      break;
+
+    case SOUND_TYPES.HEAL:
+      // Soft ascending tones — gentle and pleasant
+      [300, 450, 600].forEach((freq, i) => {
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        osc.frequency.setValueAtTime(freq, now + i * 0.07);
+        gain.gain.setValueAtTime(0.15, now + i * 0.07);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.07 + 0.2);
+        osc.type = 'sine';
+        osc.start(now + i * 0.07);
+        osc.stop(now + i * 0.07 + 0.2);
+      });
+      return;
+
     case SOUND_TYPES.BUY:
       oscillator.frequency.setValueAtTime(800, now);
       oscillator.frequency.linearRampToValueAtTime(1000, now + 0.15);

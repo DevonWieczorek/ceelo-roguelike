@@ -47,11 +47,11 @@ export const useCombat = (gameState, playSound, addLog) => {
       setTimeout(() => {
         performEnemyRoll((enemyRoll, enemyResult) => {
           if (enemyResult.type === ROLL_TYPES.INSTANT_WIN) {
-            playSound('cursed');
+            playSound('defeat');
             addLog('💀 Enemy rolled 4-5-6! INSTANT DEFEAT!');
             if (onComplete) onComplete('defeat');
           } else if (enemyResult.type === ROLL_TYPES.INSTANT_LOSS) {
-            playSound('victory');
+            playSound('roundVictory');
             addLog('🎉 Enemy rolled 1-2-3! INSTANT VICTORY!');
             if (onComplete) onComplete('victory');
           } else if (enemyResult.type === ROLL_TYPES.NONE) {
@@ -64,11 +64,11 @@ export const useCombat = (gameState, playSound, addLog) => {
 
               if (enemyResult.type === ROLL_TYPES.TRIPS) {
                 enemyDamage = enemyBaseDamage * enemyResult.value;
-                playSound('cursed');
+                playSound('enemyAttack');
                 addLog(`⚔️ Enemy TRIPS attack! ${enemyDamage} damage!`);
               } else if (enemyResult.type === ROLL_TYPES.POINT) {
                 enemyDamage = enemyBaseDamage * enemyResult.value;
-                playSound('attack');
+                playSound('enemyAttack');
                 addLog(`⚔️ Enemy point attack! ${enemyDamage} damage!`);
               }
 

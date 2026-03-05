@@ -28,8 +28,5 @@ Easy/Normal/Hard toggle at the start that scales enemy HP, gold rewards, and sho
 
 ## Low Effort / High Polish
 
-### 10. Sound Improvements
-More distinct sounds per enemy type, a dramatic sound for boss encounters, a different melody for a new run high score.
-
 ### 11. Keyboard Shortcuts
 Press `A` for Attack, `D` for Defend, `R` for Reroll — makes the game feel snappier.

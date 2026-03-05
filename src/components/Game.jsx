@@ -268,11 +268,11 @@ const Game = () => {
     if (rollResult.type === 'trips') {
       heal = rollResult.value * 5;
       addLog(`🛡️ TRIPS SHIELD! +${heal} HP!`);
-      playSound('defend');
+      playSound('heal');
     } else if (rollResult.type === 'point') {
       heal = rollResult.value * 3;
       addLog(`🛡️ Point defense! +${heal} HP!`);
-      playSound('defend');
+      playSound('heal');
     }
 
     combat.setCombat(prev => ({ ...prev, playerHP: prev.playerHP + heal }));
@@ -403,19 +403,20 @@ const Game = () => {
 
   const handleVictory = () => {
     const rewards = getVictoryRewards(gameState.round);
-    
-    playSound('victory');
-    
+    const isFinalRound = gameState.round >= gameState.maxRounds;
+
+    playSound(isFinalRound ? 'victory' : 'roundVictory');
+
     updateGameState({
       gold: gameState.gold + rewards.gold,
       baseHP: gameState.baseHP + rewards.hp,
       baseDamage: gameState.baseDamage + rewards.damage,
       round: gameState.round + 1,
     });
-    
+
     addLog(`🎉 Victory! +${rewards.gold}g, +${rewards.hp}HP, +${rewards.damage}DMG`);
-    
-    if (gameState.round >= gameState.maxRounds) {
+
+    if (isFinalRound) {
       setScreen('victory');
     } else {
       setScreen('preRound');
@@ -423,7 +424,7 @@ const Game = () => {
   };
 
   const handleDefeat = () => {
-    playSound('cursed');
+    playSound('defeat');
     addLog('💀 Defeated! Run ended...');
     setScreen('defeat');
   };

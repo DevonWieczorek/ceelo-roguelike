@@ -129,6 +129,10 @@ export const SOUND_TYPES = {
   TRIPS: 'trips',
   CURSED: 'cursed',
   VICTORY: 'victory',
+  ROUND_VICTORY: 'roundVictory',
+  DEFEAT: 'defeat',
+  ENEMY_ATTACK: 'enemyAttack',
+  HEAL: 'heal',
   BUY: 'buy',
   CLICK: 'click',
 };
