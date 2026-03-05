@@ -1,0 +1,26 @@
+.floating-number {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%);
+  font-size: var(--font-sm);
+  font-weight: bold;
+  pointer-events: none;
+  z-index: 20;
+  animation: floatUp 1.0s ease-out forwards;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+}
+
+.floating-number.damage {
+  color: var(--color-danger);
+}
+
+.floating-number.heal {
+  color: var(--color-success);
+}
+
+@keyframes floatUp {
+  0%   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-48px); }
+}

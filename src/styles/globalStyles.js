@@ -233,4 +233,13 @@ export const globalStyles = `
   .title-victory { color: var(--color-success); }
 
   .powerups-section { margin-top: var(--space-lg); }
+
+  .screen-transition {
+    animation: screenFadeIn 0.25s ease-out;
+  }
+
+  @keyframes screenFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 `;

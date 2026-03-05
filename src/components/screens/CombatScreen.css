@@ -1,3 +1,7 @@
+.hp-float-container {
+  position: relative;
+}
+
 .sidebar-round-title {
   font-size: var(--font-md);
   text-align: center;

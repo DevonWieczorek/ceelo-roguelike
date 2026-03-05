@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useGameState } from '../hooks/useGameState';
 import { useAudio } from '../hooks/useAudio';
 import { useCombat } from '../hooks/useCombat';
@@ -32,6 +32,58 @@ const Game = () => {
   const [screen, setScreen] = useState('menu');
   const [showRules, setShowRules] = useState(false);
   const [playerGoesFirst, setPlayerGoesFirst] = useState(false);
+
+  // Dice rolling animation state
+  const [diceRolling, setDiceRolling] = useState(false);
+  const [animatingDice, setAnimatingDice] = useState(null);
+
+  // Floating damage/heal numbers
+  const [floatingNumbers, setFloatingNumbers] = useState({ player: [], enemy: [] });
+  const prevPlayerHP = useRef(null);
+  const prevEnemyHP = useRef(null);
+
+  // Reset floating numbers and HP refs when leaving combat
+  useEffect(() => {
+    if (screen !== 'combat') {
+      setFloatingNumbers({ player: [], enemy: [] });
+      prevPlayerHP.current = null;
+      prevEnemyHP.current = null;
+    }
+  }, [screen]);
+
+  // Spawn floating numbers when HP changes
+  useEffect(() => {
+    if (!combat.combat || screen !== 'combat') return;
+    const current = combat.combat.playerHP;
+    if (prevPlayerHP.current !== null) {
+      const diff = current - prevPlayerHP.current;
+      if (diff !== 0) {
+        const id = Date.now() + Math.random();
+        setFloatingNumbers(prev => ({ ...prev, player: [...prev.player, { id, value: diff }] }));
+      }
+    }
+    prevPlayerHP.current = current;
+  }, [combat.combat?.playerHP]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!combat.combat || screen !== 'combat') return;
+    const current = combat.combat.enemyHP;
+    if (prevEnemyHP.current !== null) {
+      const diff = current - prevEnemyHP.current;
+      if (diff < 0) {
+        const id = Date.now() + Math.random();
+        setFloatingNumbers(prev => ({ ...prev, enemy: [...prev.enemy, { id, value: diff }] }));
+      }
+    }
+    prevEnemyHP.current = current;
+  }, [combat.combat?.enemyHP]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const removeFloatingNumber = (id, target) => {
+    setFloatingNumbers(prev => ({
+      ...prev,
+      [target]: prev[target].filter(n => n.id !== id),
+    }));
+  };
 
   const activePowerups = getActivePowerups(gameState.powerups);
 
@@ -84,68 +136,82 @@ const Game = () => {
     setPlayerGoesFirst(!playerFirst);
   };
 
+  const startDiceAnimation = (finalDice, onReveal) => {
+    const rand = () => Math.ceil(Math.random() * 6);
+    setDiceRolling(true);
+    setAnimatingDice([rand(), rand(), rand()]);
+
+    const intervalId = setInterval(() => {
+      setAnimatingDice([rand(), rand(), rand()]);
+    }, 80);
+
+    setTimeout(() => {
+      clearInterval(intervalId);
+      setDiceRolling(false);
+      setAnimatingDice(null);
+      onReveal(finalDice);
+    }, 700);
+  };
+
   const handlePlayerRollDice = () => {
     if (!combat.canPlayerRoll) return;
-    
+
     playSound('reroll');
     combat.setCanPlayerRoll(false);
-    
+
     let playerDiceRoll = rollDice(
       3,
       gameState.powerups.loadedDice > 0,
       gameState.powerups.highRoller > 0
     );
-    
-    // Apply luck modifiers
+
     playerDiceRoll = applyLuckModifiers(
       playerDiceRoll,
       gameState.powerups.luckyClover,
       gameState.powerups.devilsWard,
       addLog
     );
-    
+
     const playerResult = analyzeCeeloRoll(
       playerDiceRoll,
       gameState.powerups.pointBoost,
       gameState.powerups.aceSaver > 0,
       combat.usedAceSaver
     );
-    
-    if (playerResult.usedAceSaver) {
-      combat.setUsedAceSaver(true);
-      addLog('✨ ACE SAVER! 1-1-1 → 6-6-6');
-    }
-    
-    combat.setDice(playerDiceRoll);
-    combat.setRollResult(playerResult);
-    
-    addLog(`🎲 You roll: ${playerDiceRoll.join('-')} - ${playerResult.display}`);
-    
-    // Check for instant outcomes
-    if (playerResult.type === 'instant_win') {
-      combat.setPlayerHasRolled(true);
-      setTimeout(() => {
-        playSound('victory');
-        addLog('🎉 4-5-6! INSTANT VICTORY!');
-        handleVictory();
-      }, 1000);
-    } else if (playerResult.type === 'cursed') {
-      combat.setPlayerHasRolled(true);
-      setTimeout(() => {
-        playSound('cursed');
-        addLog('💀 1-2-3! INSTANT DEFEAT!');
-        handleDefeat();
-      }, 1000);
-    } else if (playerResult.type === 'none') {
-      // Auto-reroll on no score
-      addLog('🔄 No score - rolling again (free)');
-      setTimeout(() => {
-        combat.setCanPlayerRoll(true);
-      }, 800);
-    } else {
-      // Valid roll
-      combat.setPlayerHasRolled(true);
-    }
+
+    startDiceAnimation(playerDiceRoll, () => {
+      if (playerResult.usedAceSaver) {
+        combat.setUsedAceSaver(true);
+        addLog('✨ ACE SAVER! 1-1-1 → 6-6-6');
+      }
+
+      combat.setDice(playerDiceRoll);
+      combat.setRollResult(playerResult);
+      addLog(`🎲 You roll: ${playerDiceRoll.join('-')} - ${playerResult.display}`);
+
+      if (playerResult.type === 'instant_win') {
+        combat.setPlayerHasRolled(true);
+        setTimeout(() => {
+          playSound('victory');
+          addLog('🎉 4-5-6! INSTANT VICTORY!');
+          handleVictory();
+        }, 1000);
+      } else if (playerResult.type === 'cursed') {
+        combat.setPlayerHasRolled(true);
+        setTimeout(() => {
+          playSound('cursed');
+          addLog('💀 1-2-3! INSTANT DEFEAT!');
+          handleDefeat();
+        }, 1000);
+      } else if (playerResult.type === 'none') {
+        addLog('🔄 No score - rolling again (free)');
+        setTimeout(() => {
+          combat.setCanPlayerRoll(true);
+        }, 800);
+      } else {
+        combat.setPlayerHasRolled(true);
+      }
+    });
   };
 
   const handleAttack = () => {
@@ -245,31 +311,33 @@ const Game = () => {
         false,
         false
       );
-      combat.setDice(newDice);
-      combat.setRollResult(result);
       combat.setCombat(prev => ({ ...prev, rerollsLeft: prev.rerollsLeft - 1 }));
-      addLog(`🔄 Manual reroll: ${newDice.join('-')} - ${result.display}`);
 
-      if (result.type === 'instant_win') {
-        setTimeout(() => {
-          playSound('victory');
-          addLog('🎉 4-5-6! INSTANT VICTORY!');
-          handleVictory();
-        }, 1000);
-      } else if (result.type === 'cursed') {
-        setTimeout(() => {
-          playSound('cursed');
-          addLog('💀 1-2-3! INSTANT DEFEAT!');
-          handleDefeat();
-        }, 1000);
-      } else if (result.type === 'none') {
-        // No score after reroll — let player roll again for free
-        addLog('🔄 No score - rolling again (free)');
-        combat.setPlayerHasRolled(false);
-        setTimeout(() => {
-          combat.setCanPlayerRoll(true);
-        }, 800);
-      }
+      startDiceAnimation(newDice, () => {
+        combat.setDice(newDice);
+        combat.setRollResult(result);
+        addLog(`🔄 Manual reroll: ${newDice.join('-')} - ${result.display}`);
+
+        if (result.type === 'instant_win') {
+          setTimeout(() => {
+            playSound('victory');
+            addLog('🎉 4-5-6! INSTANT VICTORY!');
+            handleVictory();
+          }, 1000);
+        } else if (result.type === 'cursed') {
+          setTimeout(() => {
+            playSound('cursed');
+            addLog('💀 1-2-3! INSTANT DEFEAT!');
+            handleDefeat();
+          }, 1000);
+        } else if (result.type === 'none') {
+          addLog('🔄 No score - rolling again (free)');
+          combat.setPlayerHasRolled(false);
+          setTimeout(() => {
+            combat.setCanPlayerRoll(true);
+          }, 800);
+        }
+      });
     }
   };
 
@@ -392,74 +460,82 @@ const Game = () => {
 
   return (
     <>
-      {/* Main Screen */}
-      {screen === 'menu' && (
-        <MenuScreen
-          gameState={gameState}
-          activePowerups={activePowerups}
-          onStartRound={handleStartRound}
-          onVisitShop={() => setScreen('shop')}
-        />
-      )}
+      {/* Main Screen — key triggers fade-in animation on screen change */}
+      <div key={screen} className="screen-transition">
+        {screen === 'menu' && (
+          <MenuScreen
+            gameState={gameState}
+            activePowerups={activePowerups}
+            onStartRound={handleStartRound}
+            onVisitShop={() => setScreen('shop')}
+          />
+        )}
 
-      {screen === 'preRound' && (
-        <PreRoundScreen
-          gameState={gameState}
-          activePowerups={activePowerups}
-          onBeginCombat={handleBeginCombat}
-          onVisitShop={() => setScreen('shop')}
-          onUseFirstStrike={handleUseFirstStrike}
-          playSound={playSound}
-        />
-      )}
+        {screen === 'preRound' && (
+          <PreRoundScreen
+            gameState={gameState}
+            activePowerups={activePowerups}
+            onBeginCombat={handleBeginCombat}
+            onVisitShop={() => setScreen('shop')}
+            onUseFirstStrike={handleUseFirstStrike}
+            playSound={playSound}
+          />
+        )}
 
-      {screen === 'combat' && (
-        <CombatScreen
-          gameState={gameState}
-          combat={combat.combat}
-          dice={combat.dice}
-          enemyDice={combat.enemyDice}
-          rollResult={combat.rollResult}
-          enemyRollResult={combat.enemyRollResult}
-          canPlayerRoll={combat.canPlayerRoll}
-          playerHasRolled={combat.playerHasRolled}
-          wildDieUsed={combat.wildDieUsed}
-          pendingWildDie={combat.pendingWildDie}
-          onRollDice={handlePlayerRollDice}
-          onAttack={handleAttack}
-          onDefend={handleDefend}
-          onReroll={handleReroll}
-          onWildDie={handleWildDie}
-        />
-      )}
+        {screen === 'combat' && (
+          <CombatScreen
+            gameState={gameState}
+            combat={combat.combat}
+            dice={combat.dice}
+            enemyDice={combat.enemyDice}
+            rollResult={combat.rollResult}
+            enemyRollResult={combat.enemyRollResult}
+            canPlayerRoll={combat.canPlayerRoll}
+            playerHasRolled={combat.playerHasRolled}
+            wildDieUsed={combat.wildDieUsed}
+            pendingWildDie={combat.pendingWildDie}
+            isDiceRolling={diceRolling}
+            animatingDice={animatingDice}
+            isEnemyDiceRolling={combat.enemyDiceRolling}
+            enemyAnimatingDice={combat.enemyAnimatingDice}
+            floatingNumbers={floatingNumbers}
+            onRemoveFloat={removeFloatingNumber}
+            onRollDice={handlePlayerRollDice}
+            onAttack={handleAttack}
+            onDefend={handleDefend}
+            onReroll={handleReroll}
+            onWildDie={handleWildDie}
+          />
+        )}
 
-      {screen === 'shop' && (
-        <ShopScreen
-          gameState={gameState}
-          onBuyPowerup={handleBuyPowerup}
-          onContinue={() => setScreen('menu')}
-          playSound={playSound}
-        />
-      )}
+        {screen === 'shop' && (
+          <ShopScreen
+            gameState={gameState}
+            onBuyPowerup={handleBuyPowerup}
+            onContinue={() => setScreen('menu')}
+            playSound={playSound}
+          />
+        )}
 
-      {screen === 'victory' && (
-        <VictoryScreen
-          gameState={gameState}
-          activePowerups={activePowerups}
-          onNewRun={handleRestart}
-          playSound={playSound}
-        />
-      )}
+        {screen === 'victory' && (
+          <VictoryScreen
+            gameState={gameState}
+            activePowerups={activePowerups}
+            onNewRun={handleRestart}
+            playSound={playSound}
+          />
+        )}
 
-      {screen === 'defeat' && (
-        <DefeatScreen
-          gameState={gameState}
-          activePowerups={activePowerups}
-          onNewRun={handleRestart}
-          onMainMenu={handleRestart}
-          playSound={playSound}
-        />
-      )}
+        {screen === 'defeat' && (
+          <DefeatScreen
+            gameState={gameState}
+            activePowerups={activePowerups}
+            onNewRun={handleRestart}
+            onMainMenu={handleRestart}
+            playSound={playSound}
+          />
+        )}
+      </div>
 
       {/* Combat Log - Always visible */}
       <CombatLog log={log} logRef={logRef} />

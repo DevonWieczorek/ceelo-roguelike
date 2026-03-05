@@ -58,3 +58,15 @@
   0%, 100% { box-shadow: 0 0 0 rgba(46, 204, 113, 0); }
   50% { box-shadow: 0 0 30px rgba(46, 204, 113, 0.8); }
 }
+
+.die.die-rolling {
+  background: linear-gradient(135deg, var(--color-surface-deep), #1a4080);
+  animation: diceRoll 0.1s ease-in-out infinite;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@keyframes diceRoll {
+  0%   { transform: rotate(-8deg) scale(1.05); }
+  50%  { transform: rotate(8deg)  scale(0.95); }
+  100% { transform: rotate(-8deg) scale(1.05); }
+}

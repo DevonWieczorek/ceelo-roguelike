@@ -65,8 +65,9 @@ ceelo-roguelike/
 Each component has its own CSS file co-located with it:
 
 **Component Styles:**
-- `Dice.css` - Die animations (pulse, shake, glow)
+- `Dice.css` - Die animations (pulse, shake, glow, rolling)
 - `HPBar.css` - Health bar gradients and transitions
+- `FloatingNumber.css` - Floating damage/heal number animations
 - `ShopItem.css` - Shop item flex layout
 - `CombatLog.css` - Scrollable log with color coding
 - `RulesModal.css` - Modal overlay and rules sections
@@ -137,10 +138,16 @@ Each component has its own CSS file co-located with it:
 ### UI Components
 
 **Dice** - Individual die
-- Props: `value`, `type`, `isPointDie`, `isPairDie`, `onClick`, `clickable`
+- Props: `value`, `type`, `isPointDie`, `isPairDie`, `onClick`, `clickable`, `isRolling`
 - Styled based on roll type
 - Point die renders larger, pair dice render smaller
 - Clickable for Wild Die powerup
+- Rolling animation cycles random values before settling
+
+**FloatingNumber** - Floating damage/heal number
+- Props: `value`, `onDone`
+- Positive value = green heal, negative = red damage
+- Floats upward and fades out over 1s
 
 **HPBar** - Health bar
 - Props: `current`, `max`, `label`, `type`
@@ -291,12 +298,11 @@ The game was extended from 5 to 10 rounds with the following rebalancing:
 ## Next Steps
 
 ### Possible Enhancements
-1. **Animations** - Damage numbers, dice rolling
-2. **Persistence** - localStorage for save files
-4. **More Powerups** - Expand the shop
-5. **Enemy Types** - Different enemy abilities
-6. **Achievements** - Track player progress
-7. **Testing** - Unit tests with Vitest
+1. **Persistence** - localStorage for save files
+2. **More Powerups** - Expand the shop
+3. **Enemy Types** - Different enemy abilities
+4. **Achievements** - Track player progress
+5. **Testing** - Unit tests with Vitest
 
 ### Performance
 - No performance issues expected
