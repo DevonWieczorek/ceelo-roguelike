@@ -42,7 +42,7 @@ const RulesModal = ({ onClose, playSound }) => {
             <li><strong>💎 DOUBLE DOWN (30g):</strong> All trips deal 2× their normal damage. Combo with high trips!</li>
             <li><strong>📈 POINT BOOST (15g):</strong> Adds +1 to all your point values. Stackable!</li>
             <li><strong>🔄 EXTRA REROLL (12g):</strong> Adds +1 manual reroll per round. Stackable! Remember: "no score" rerolls are always free!</li>
-            <li><strong>🎰 HIGH ROLLER (40g):</strong> Consumable — activate before a round to force all dice to roll 4-6 that round. Stackable!</li>
+            <li><strong>🎰 HIGH ROLLER (40g):</strong> Consumable — activate before a roll to force all dice to roll 4-6 that roll. Stackable!</li>
             <li><strong>🍀 LUCKY CLOVER (30g):</strong> 15% chance per level to reroll low dice towards 4-5-6. Stackable!</li>
             <li><strong>🛡️ DEVIL'S WARD (30g):</strong> 20% chance per level to reroll a die to avoid 1-2-3. Stackable!</li>
             <li><strong>⚡ FIRST STRIKE (20g):</strong> Consumable — use before a round to go first that round. Stackable!</li>
