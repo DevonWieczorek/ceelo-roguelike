@@ -84,6 +84,49 @@
   margin-top: var(--space-lg);
 }
 
+.wild-die-prompt {
+  text-align: center;
+  color: var(--color-warning);
+  text-shadow: 0 0 8px var(--color-warning);
+  animation: pulse 1s ease-in-out infinite;
+  margin-bottom: var(--space-xs);
+}
+
+.consumables-strip-wrapper {
+  margin-top: var(--space-md);
+}
+
+.consumables-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-xs);
+}
+
+.consumable-btn {
+  flex: 0 1 auto;
+  font-size: 9px !important;
+  padding: var(--space-xs) var(--space-sm) !important;
+  line-height: 1.4 !important;
+}
+
+.consumable-btn.is-active {
+  border-color: var(--color-warning) !important;
+  color: var(--color-warning) !important;
+  text-shadow: 0 0 6px var(--color-warning) !important;
+  box-shadow: 0 0 8px var(--color-warning) !important;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.consumable-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.combat-mobile-items {
+  margin-top: var(--space-sm);
+}
+
 /* Desktop: 2-column grid layout */
 @media (min-width: 768px) {
   .combat-layout {
@@ -99,6 +142,10 @@
 
   .combat-sidebar .status-grid {
     grid-template-columns: 1fr;
+  }
+
+  .combat-mobile-items {
+    display: none;
   }
 
   .combat-mobile-status {
