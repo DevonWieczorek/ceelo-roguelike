@@ -22,6 +22,10 @@ const CombatScreen = ({
   enemyAnimatingDice,
   floatingNumbers,
   onRemoveFloat,
+  highRollerActive,
+  onUseHighRoller,
+  doubleDownActive,
+  onUseDoubleDown,
   onRollDice,
   onAttack,
   onDefend,
@@ -159,7 +163,7 @@ const CombatScreen = ({
               </div>
               {rollResult.type === 'trips' && (
                 <div className="roll-result-detail">
-                  Damage: {gameState.baseDamage} × {rollResult.value}{gameState.powerups.doubleDown > 0 ? ' × 2' : ''} = {gameState.baseDamage * rollResult.value * (gameState.powerups.doubleDown > 0 ? 2 : 1)}
+                  Damage: {gameState.baseDamage} × {rollResult.value}{doubleDownActive ? ' × 2' : ''} = {gameState.baseDamage * rollResult.value * (doubleDownActive ? 2 : 1)}
                 </div>
               )}
               {rollResult.type === 'point' && (
@@ -185,13 +189,24 @@ const CombatScreen = ({
         {/* Action Buttons */}
         <div className="action-buttons">
           {!playerHasRolled && (
-            <button
-              className="button-8bit button-success button-roll"
-              onClick={onRollDice}
-              disabled={!canPlayerRoll}
-            >
-              🎲 ROLL DICE
-            </button>
+            <>
+              <button
+                className="button-8bit button-success button-roll"
+                onClick={onRollDice}
+                disabled={!canPlayerRoll}
+              >
+                🎲 ROLL DICE
+              </button>
+              {(gameState.powerups.highRoller > 0 || highRollerActive) && (
+                <button
+                  className="button-8bit button-warning"
+                  onClick={onUseHighRoller}
+                  disabled={highRollerActive || !canPlayerRoll}
+                >
+                  {highRollerActive ? '🎰 HIGH ROLLER READY' : `🎰 HIGH ROLLER (${gameState.powerups.highRoller})`}
+                </button>
+              )}
+            </>
           )}
 
           {playerHasRolled && (
@@ -203,6 +218,17 @@ const CombatScreen = ({
               >
                 ⚔️ ATTACK
               </button>
+              {rollResult?.type === 'trips' && gameState.powerups.doubleDown > 0 && !doubleDownActive && (
+                <button
+                  className="button-8bit button-warning"
+                  onClick={onUseDoubleDown}
+                >
+                  💎 DOUBLE DOWN ({gameState.powerups.doubleDown})
+                </button>
+              )}
+              {doubleDownActive && (
+                <div className="consumable-active-badge">💎 2× DAMAGE ACTIVE</div>
+              )}
               <button
                 className="button-8bit button-success"
                 onClick={onDefend}

@@ -67,6 +67,19 @@
   margin-bottom: var(--space-sm);
 }
 
+.consumable-active-badge {
+  flex: 1 1 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-xs);
+  color: var(--color-warning);
+  text-shadow: 0 0 8px var(--color-warning);
+  border: 2px solid var(--color-warning);
+  padding: var(--space-xs) var(--space-sm);
+  animation: pulse 1s ease-in-out infinite;
+}
+
 .enemy-roll-margin {
   margin-top: var(--space-lg);
 }

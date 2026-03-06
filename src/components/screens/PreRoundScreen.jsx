@@ -5,14 +5,12 @@ import './PreRoundScreen.css';
 const PreRoundScreen = ({
   gameState,
   activePowerups,
-  highRollerActive,
   onBeginCombat,
   onVisitShop,
   onUseFirstStrike,
-  onUseHighRoller,
   playSound
 }) => {
-  const hasConsumables = gameState.powerups.firstStrike > 0 || gameState.powerups.highRoller > 0 || highRollerActive;
+  const hasConsumables = gameState.powerups.firstStrike > 0;
   return (
     <div className="card-8bit pixel-border">
       <h2 className="title">⚔️ ROUND {gameState.round} PREPARATION</h2>
@@ -61,23 +59,6 @@ const PreRoundScreen = ({
                     onClick={onUseFirstStrike}
                   >
                     USE FIRST STRIKE
-                  </button>
-                </div>
-              )}
-              {(gameState.powerups.highRoller > 0 || highRollerActive) && (
-                <div className="consumable-detail">
-                  <div className="consumable-title">
-                    🎰 HIGH ROLLER × {gameState.powerups.highRoller}
-                  </div>
-                  <div className="stat-label consumable-desc">
-                    All dice roll 4-6 this round (consumed on use)
-                  </div>
-                  <button
-                    className="button-8bit button-warning button-consumable"
-                    onClick={onUseHighRoller}
-                    disabled={highRollerActive}
-                  >
-                    {highRollerActive ? '🎰 ACTIVE THIS ROUND' : 'USE HIGH ROLLER'}
                   </button>
                 </div>
               )}

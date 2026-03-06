@@ -35,6 +35,7 @@ const Game = () => {
   const [showRules, setShowRules] = useState(false);
   const [playerGoesFirst, setPlayerGoesFirst] = useState(false);
   const [highRollerActive, setHighRollerActive] = useState(false);
+  const [doubleDownActive, setDoubleDownActive] = useState(false);
 
   // Dice rolling animation state
   const [diceRolling, setDiceRolling] = useState(false);
@@ -93,6 +94,7 @@ const Game = () => {
   // Game flow handlers
   const handleStartRound = () => {
     setHighRollerActive(false);
+    setDoubleDownActive(false);
     setScreen('preRound');
   };
 
@@ -175,6 +177,7 @@ const Game = () => {
     const playerResult = analyzeCeeloRoll(playerDiceRoll, gameState.powerups.pointBoost);
 
     startDiceAnimation(playerDiceRoll, () => {
+      setHighRollerActive(false);
       combat.setDice(playerDiceRoll);
       combat.setRollResult(playerResult);
       addLog(`🎲 You roll: ${playerDiceRoll.join('-')} - ${playerResult.display}`);
@@ -213,7 +216,7 @@ const Game = () => {
     
     if (rollResult.type === 'trips') {
       let multiplier = rollResult.value;
-      if (gameState.powerups.doubleDown > 0) multiplier *= 2;
+      if (doubleDownActive) multiplier *= 2;
       damage = gameState.baseDamage * multiplier;
       addLog(`⚡ TRIPS ${rollResult.value}! ${damage} damage!`);
       playSound('trips');
@@ -222,7 +225,8 @@ const Game = () => {
       addLog(`⚔️ Point ${rollResult.value}! ${damage} damage!`);
       playSound('attack');
     }
-    
+
+    setDoubleDownActive(false);
     combat.setCombat(prev => ({ ...prev, enemyHP: Math.max(0, prev.enemyHP - damage) }));
     
     if (combat.combat.enemyHP - damage <= 0) {
@@ -295,6 +299,7 @@ const Game = () => {
       combat.setCombat(prev => ({ ...prev, rerollsLeft: prev.rerollsLeft - 1 }));
 
       startDiceAnimation(newDice, () => {
+        setHighRollerActive(false);
         combat.setDice(newDice);
         combat.setRollResult(result);
         addLog(`🔄 Manual reroll: ${newDice.join('-')} - ${result.display}`);
@@ -446,7 +451,18 @@ const Game = () => {
         powerups: { ...gameState.powerups, highRoller: gameState.powerups.highRoller - 1 }
       });
       setHighRollerActive(true);
-      addLog('🎰 High Roller activated! All dice will roll 4-6 this round!');
+      addLog('🎰 High Roller activated! Next roll will be 4-6!');
+    }
+  };
+
+  const handleUseDoubleDown = () => {
+    if (gameState.powerups.doubleDown > 0 && !doubleDownActive) {
+      playSound('click');
+      updateGameState({
+        powerups: { ...gameState.powerups, doubleDown: gameState.powerups.doubleDown - 1 }
+      });
+      setDoubleDownActive(true);
+      addLog('💎 Double Down activated! Next trips attack deals 2× damage!');
     }
   };
 
@@ -468,11 +484,9 @@ const Game = () => {
           <PreRoundScreen
             gameState={gameState}
             activePowerups={activePowerups}
-            highRollerActive={highRollerActive}
             onBeginCombat={handleBeginCombat}
             onVisitShop={() => setScreen('shop')}
             onUseFirstStrike={handleUseFirstStrike}
-            onUseHighRoller={handleUseHighRoller}
             playSound={playSound}
           />
         )}
@@ -495,6 +509,10 @@ const Game = () => {
             enemyAnimatingDice={combat.enemyAnimatingDice}
             floatingNumbers={floatingNumbers}
             onRemoveFloat={removeFloatingNumber}
+            highRollerActive={highRollerActive}
+            onUseHighRoller={handleUseHighRoller}
+            doubleDownActive={doubleDownActive}
+            onUseDoubleDown={handleUseDoubleDown}
             onRollDice={handlePlayerRollDice}
             onAttack={handleAttack}
             onDefend={handleDefend}

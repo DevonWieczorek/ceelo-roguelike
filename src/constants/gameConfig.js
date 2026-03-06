@@ -26,8 +26,9 @@ export const POWERUP_INFO = {
   doubleDown: {
     name: 'Double Down',
     icon: '💎',
-    description: 'Trips deal 2× damage',
-    stackable: false,
+    description: 'Activate before attacking for 2× trips damage (consumable)',
+    stackable: true,
+    consumable: true,
   },
   pointBoost: {
     name: 'Point Boost',
@@ -38,7 +39,7 @@ export const POWERUP_INFO = {
   highRoller: {
     name: 'High Roller',
     icon: '🎰',
-    description: 'All dice roll 4-6 this round (consumable)',
+    description: 'Activate before rolling — all dice roll 4-6 (consumable)',
     stackable: true,
     consumable: true,
   },
