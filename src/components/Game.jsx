@@ -34,6 +34,7 @@ const Game = () => {
   const [screen, setScreen] = useState('menu');
   const [showRules, setShowRules] = useState(false);
   const [playerGoesFirst, setPlayerGoesFirst] = useState(false);
+  const [highRollerActive, setHighRollerActive] = useState(false);
 
   // Dice rolling animation state
   const [diceRolling, setDiceRolling] = useState(false);
@@ -91,6 +92,7 @@ const Game = () => {
 
   // Game flow handlers
   const handleStartRound = () => {
+    setHighRollerActive(false);
     setScreen('preRound');
   };
 
@@ -161,11 +163,7 @@ const Game = () => {
     playSound('reroll');
     combat.setCanPlayerRoll(false);
 
-    let playerDiceRoll = rollDice(
-      3,
-      gameState.powerups.loadedDice > 0,
-      gameState.powerups.highRoller > 0
-    );
+    let playerDiceRoll = rollDice(3, highRollerActive);
 
     playerDiceRoll = applyLuckModifiers(
       playerDiceRoll,
@@ -174,19 +172,9 @@ const Game = () => {
       addLog
     );
 
-    const playerResult = analyzeCeeloRoll(
-      playerDiceRoll,
-      gameState.powerups.pointBoost,
-      gameState.powerups.aceSaver > 0,
-      combat.usedAceSaver
-    );
+    const playerResult = analyzeCeeloRoll(playerDiceRoll, gameState.powerups.pointBoost);
 
     startDiceAnimation(playerDiceRoll, () => {
-      if (playerResult.usedAceSaver) {
-        combat.setUsedAceSaver(true);
-        addLog('✨ ACE SAVER! 1-1-1 → 6-6-6');
-      }
-
       combat.setDice(playerDiceRoll);
       combat.setRollResult(playerResult);
       addLog(`🎲 You roll: ${playerDiceRoll.join('-')} - ${playerResult.display}`);
@@ -302,17 +290,8 @@ const Game = () => {
     if (combat.combat.rerollsLeft > 0) {
       commitWildDie();
       playSound('reroll');
-      const newDice = rollDice(
-        3,
-        gameState.powerups.loadedDice > 0,
-        gameState.powerups.highRoller > 0
-      );
-      const result = analyzeCeeloRoll(
-        newDice,
-        gameState.powerups.pointBoost,
-        false,
-        false
-      );
+      const newDice = rollDice(3, highRollerActive);
+      const result = analyzeCeeloRoll(newDice, gameState.powerups.pointBoost);
       combat.setCombat(prev => ({ ...prev, rerollsLeft: prev.rerollsLeft - 1 }));
 
       startDiceAnimation(newDice, () => {
@@ -453,13 +432,21 @@ const Game = () => {
     if (gameState.powerups.firstStrike > 0) {
       playSound('click');
       updateGameState({
-        powerups: {
-          ...gameState.powerups,
-          firstStrike: gameState.powerups.firstStrike - 1
-        }
+        powerups: { ...gameState.powerups, firstStrike: gameState.powerups.firstStrike - 1 }
       });
       setPlayerGoesFirst(true);
       addLog('⚡ First Strike activated! You go first this round!');
+    }
+  };
+
+  const handleUseHighRoller = () => {
+    if (gameState.powerups.highRoller > 0 && !highRollerActive) {
+      playSound('click');
+      updateGameState({
+        powerups: { ...gameState.powerups, highRoller: gameState.powerups.highRoller - 1 }
+      });
+      setHighRollerActive(true);
+      addLog('🎰 High Roller activated! All dice will roll 4-6 this round!');
     }
   };
 
@@ -481,9 +468,11 @@ const Game = () => {
           <PreRoundScreen
             gameState={gameState}
             activePowerups={activePowerups}
+            highRollerActive={highRollerActive}
             onBeginCombat={handleBeginCombat}
             onVisitShop={() => setScreen('shop')}
             onUseFirstStrike={handleUseFirstStrike}
+            onUseHighRoller={handleUseHighRoller}
             playSound={playSound}
           />
         )}

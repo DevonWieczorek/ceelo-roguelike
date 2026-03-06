@@ -9,11 +9,8 @@ const createInitialState = () => ({
   maxRounds: GAME_CONFIG.MAX_ROUNDS,
   rerolls: GAME_CONFIG.STARTING_REROLLS,
   powerups: {
-    loadedDice: 0,
     doubleDown: 0,
     pointBoost: 0,
-    aceSaver: 0,
-
     highRoller: 0,
     wildDie: 0,
     extraReroll: 0,

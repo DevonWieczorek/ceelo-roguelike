@@ -11,11 +11,8 @@ export const GAME_CONFIG = {
 
 // Initial powerup prices
 export const INITIAL_PRICES = {
-  loadedDice: 25,
   doubleDown: 30,
   pointBoost: 15,
-  aceSaver: 35,
-
   highRoller: 40,
   wildDie: 25,
   extraReroll: 12,
@@ -26,12 +23,6 @@ export const INITIAL_PRICES = {
 
 // Powerup metadata
 export const POWERUP_INFO = {
-  loadedDice: {
-    name: 'Loaded Dice',
-    icon: '🎲',
-    description: 'One die locked to 6. Prevents 1-2-3',
-    stackable: false,
-  },
   doubleDown: {
     name: 'Double Down',
     icon: '💎',
@@ -44,18 +35,12 @@ export const POWERUP_INFO = {
     description: '+1 to all point values',
     stackable: true,
   },
-  aceSaver: {
-    name: 'Ace Saver',
-    icon: '✨',
-    description: '1-1-1 becomes 6-6-6 once per round',
-    stackable: false,
-  },
-
   highRoller: {
     name: 'High Roller',
     icon: '🎰',
-    description: 'All dice roll 4-6. Prevents 1-2-3!',
-    stackable: false,
+    description: 'All dice roll 4-6 this round (consumable)',
+    stackable: true,
+    consumable: true,
   },
   wildDie: {
     name: 'Wild Die',

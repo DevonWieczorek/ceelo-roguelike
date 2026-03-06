@@ -10,7 +10,6 @@ export const useCombat = (gameState, playSound, addLog) => {
   const [enemyRollResult, setEnemyRollResult] = useState(null);
   const [canPlayerRoll, setCanPlayerRoll] = useState(false);
   const [playerHasRolled, setPlayerHasRolled] = useState(false);
-  const [usedAceSaver, setUsedAceSaver] = useState(false);
   const [wildDieUsed, setWildDieUsed] = useState(0);
   const [pendingWildDie, setPendingWildDie] = useState(null); // { index, originalValue }
   const [enemyDiceRolling, setEnemyDiceRolling] = useState(false);
@@ -18,8 +17,8 @@ export const useCombat = (gameState, playSound, addLog) => {
 
   // Rolls enemy dice, animates, then calls onResult(enemyRoll, enemyResult)
   const performEnemyRoll = (onResult) => {
-    const enemyRoll = rollDice(3, false, false);
-    const enemyResult = analyzeCeeloRoll(enemyRoll, 0, false, false);
+    const enemyRoll = rollDice(3, false);
+    const enemyResult = analyzeCeeloRoll(enemyRoll, 0);
 
     const rand = () => Math.ceil(Math.random() * 6);
     setEnemyDiceRolling(true);
@@ -112,7 +111,6 @@ export const useCombat = (gameState, playSound, addLog) => {
     setEnemyRollResult(null);
     setCanPlayerRoll(false);
     setPlayerHasRolled(false);
-    setUsedAceSaver(false);
     setWildDieUsed(0);
     setPendingWildDie(null);
     setEnemyDiceRolling(false);
@@ -132,8 +130,6 @@ export const useCombat = (gameState, playSound, addLog) => {
     setCanPlayerRoll,
     playerHasRolled,
     setPlayerHasRolled,
-    usedAceSaver,
-    setUsedAceSaver,
     wildDieUsed,
     setWildDieUsed,
     pendingWildDie,

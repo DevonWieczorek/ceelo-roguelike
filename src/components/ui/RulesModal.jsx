@@ -39,20 +39,17 @@ const RulesModal = ({ onClose, playSound }) => {
         <div className="rules-section pixel-border">
           <div className="rules-title">POWERUP GUIDE</div>
           <ul className="rules-list">
-            <li><strong>🎲 LOADED DICE (25g):</strong> One die is permanently locked to 6. Makes trips easier and prevents 1-2-3!</li>
             <li><strong>💎 DOUBLE DOWN (30g):</strong> All trips deal 2× their normal damage. Combo with high trips!</li>
             <li><strong>📈 POINT BOOST (15g):</strong> Adds +1 to all your point values. Stackable!</li>
             <li><strong>🔄 EXTRA REROLL (12g):</strong> Adds +1 manual reroll per round. Stackable! Remember: "no score" rerolls are always free!</li>
-            <li><strong>✨ ACE SAVER (35g):</strong> Once per round, turn 1-1-1 (worst trips) into 6-6-6 (best trips)!</li>
-
-            <li><strong>🎰 HIGH ROLLER (40g):</strong> All dice always roll 4, 5, or 6. Prevents 1-2-3 entirely!</li>
+            <li><strong>🎰 HIGH ROLLER (40g):</strong> Consumable — activate before a round to force all dice to roll 4-6 that round. Stackable!</li>
             <li><strong>🍀 LUCKY CLOVER (30g):</strong> 15% chance per level to reroll low dice towards 4-5-6. Stackable!</li>
             <li><strong>🛡️ DEVIL'S WARD (30g):</strong> 20% chance per level to reroll a die to avoid 1-2-3. Stackable!</li>
-            <li><strong>⚡ FIRST STRIKE (20g):</strong> Consumable item - use before a round to go first that round. Stackable!</li>
+            <li><strong>⚡ FIRST STRIKE (20g):</strong> Consumable — use before a round to go first that round. Stackable!</li>
             <li><strong>🎯 WILD DIE (25g):</strong> Click a die to set its value once per round. Stackable!</li>
           </ul>
           <div className="rules-tip">
-            💡 PRICE SCALING: All items increase 2% per total purchase. Each powerup increases 50% when you buy it again (40% for stackables). You can buy multiples of everything!
+            💡 PRICE SCALING: All items increase 1% per total purchase. Each powerup increases 50% when you buy it again (40% for stackables). You can buy multiples of everything!
           </div>
         </div>
 
@@ -60,12 +57,11 @@ const RulesModal = ({ onClose, playSound }) => {
           <div className="rules-title">STRATEGY TIPS</div>
           <ul className="rules-list">
             <li>CRITICAL: 1-2-3 = instant loss, 4-5-6 = instant win. Avoid the former at all costs!</li>
-            <li>High Roller is now ESSENTIAL - it prevents 1-2-3 entirely by keeping all dice 4-6</li>
-            <li>Loaded Dice also prevents 1-2-3 since one die is always 6</li>
-            <li>Wild Die is your insurance policy - use it to avoid completing 1-2-3 combinations</li>
-            <li>Combo: Loaded Dice + High Roller = Guaranteed 6-6-6 trips AND no risk of 1-2-3!</li>
-            <li>Prices increase as you buy more - plan your build carefully!</li>
-            <li>Later rounds give more gold and better rewards - but enemies get much tougher!</li>
+            <li>High Roller is powerful but consumable — save it for tough rounds when you need the guaranteed 4-6 range!</li>
+            <li>Wild Die is your insurance policy — use it to avoid completing 1-2-3 combinations</li>
+            <li>Devil's Ward gives passive protection against 1-2-3; stack it for reliable coverage</li>
+            <li>Prices increase as you buy more — plan your build carefully!</li>
+            <li>Later rounds give more gold and better rewards — but enemies get much tougher!</li>
           </ul>
         </div>
 

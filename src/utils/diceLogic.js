@@ -3,26 +3,22 @@ import { ROLL_TYPES, GAME_CONFIG } from '../constants/gameConfig';
 /**
  * Analyzes a roll of three dice and returns the result type
  */
-export const analyzeCeeloRoll = (dice, pointBoostCount = 0, aceSaverActive = false, usedAceSaver = false) => {
+export const analyzeCeeloRoll = (dice, pointBoostCount = 0) => {
   const sorted = [...dice].sort((a, b) => a - b);
   const [d1, d2, d3] = sorted;
-  
+
   // Check for 1-2-3 (instant loss)
   if (d1 === 1 && d2 === 2 && d3 === 3) {
     return { type: ROLL_TYPES.INSTANT_LOSS, value: 0, display: '💀 1-2-3 INSTANT LOSS!' };
   }
-  
+
   // Check for 4-5-6 (instant win)
   if (d1 === 4 && d2 === 5 && d3 === 6) {
     return { type: ROLL_TYPES.INSTANT_WIN, value: 0, display: '🎉 4-5-6 INSTANT WIN!' };
   }
-  
+
   // Check for trips (all three match)
   if (d1 === d2 && d2 === d3) {
-    // Ace saver: 1-1-1 becomes 6-6-6
-    if (d1 === 1 && aceSaverActive && !usedAceSaver) {
-      return { type: ROLL_TYPES.TRIPS, value: 6 + GAME_CONFIG.TRIPS_BONUS, display: `TRIPS! ${6}-${6}-${6}`, usedAceSaver: true };
-    }
     return { type: ROLL_TYPES.TRIPS, value: d1 + GAME_CONFIG.TRIPS_BONUS, display: `TRIPS! ${d1}-${d1}-${d1}` };
   }
   
@@ -91,18 +87,13 @@ export const applyLuckModifiers = (dice, luckyCloverCount, devilsWardCount, addL
 /**
  * Generates random dice with powerup modifiers applied
  */
-export const rollDice = (count, hasLoadedDice, hasHighRoller) => {
+export const rollDice = (count, hasHighRoller) => {
   let rolls = Array.from({ length: count }, () => Math.floor(Math.random() * 6) + 1);
-  
-  // Apply loaded dice (lock one to 6)
-  if (hasLoadedDice && rolls.length === 3) {
-    rolls[0] = 6;
-  }
-  
+
   // Apply high roller (all dice ≥4)
   if (hasHighRoller) {
     rolls = rolls.map(d => d < 4 ? Math.floor(Math.random() * 3) + 4 : d);
   }
-  
+
   return rolls;
 };
