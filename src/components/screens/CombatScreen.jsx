@@ -197,15 +197,6 @@ const CombatScreen = ({
               >
                 🎲 ROLL DICE
               </button>
-              {(gameState.powerups.highRoller > 0 || highRollerActive) && (
-                <button
-                  className="button-8bit button-warning"
-                  onClick={onUseHighRoller}
-                  disabled={highRollerActive || !canPlayerRoll}
-                >
-                  {highRollerActive ? '🎰 HIGH ROLLER READY' : `🎰 HIGH ROLLER (${gameState.powerups.highRoller})`}
-                </button>
-              )}
             </>
           )}
 
@@ -218,17 +209,6 @@ const CombatScreen = ({
               >
                 ⚔️ ATTACK
               </button>
-              {rollResult?.type === 'trips' && gameState.powerups.doubleDown > 0 && !doubleDownActive && (
-                <button
-                  className="button-8bit button-warning"
-                  onClick={onUseDoubleDown}
-                >
-                  💎 DOUBLE DOWN ({gameState.powerups.doubleDown})
-                </button>
-              )}
-              {doubleDownActive && (
-                <div className="consumable-active-badge">💎 2× DAMAGE ACTIVE</div>
-              )}
               <button
                 className="button-8bit button-success"
                 onClick={onDefend}
@@ -246,6 +226,53 @@ const CombatScreen = ({
             </>
           )}
         </div>
+
+        {/* Consumables Strip */}
+        {(gameState.powerups.highRoller > 0 || highRollerActive || gameState.powerups.doubleDown > 0 || doubleDownActive) && (
+          <div className="consumables-strip-wrapper">
+            <div className="stat-label">ITEMS</div>
+            <div className="consumables-strip">
+              {(gameState.powerups.highRoller > 0 || highRollerActive) && (() => {
+                const isDisabled = playerHasRolled || highRollerActive;
+                const disabledReason = highRollerActive
+                  ? 'Already active'
+                  : playerHasRolled
+                  ? 'Must use before rolling'
+                  : undefined;
+                return (
+                  <button
+                    className={`button-8bit consumable-btn${highRollerActive ? ' is-active' : ''}`}
+                    onClick={onUseHighRoller}
+                    disabled={isDisabled}
+                    title={disabledReason}
+                  >
+                    🎰 High Roller{highRollerActive ? ' (ACTIVE)' : ` ×${gameState.powerups.highRoller}`}
+                  </button>
+                );
+              })()}
+              {(gameState.powerups.doubleDown > 0 || doubleDownActive) && (() => {
+                const isDisabled = !playerHasRolled || rollResult?.type !== 'trips' || doubleDownActive;
+                const disabledReason = doubleDownActive
+                  ? 'Already active'
+                  : !playerHasRolled
+                  ? 'Roll first'
+                  : rollResult?.type !== 'trips'
+                  ? 'Only on trips'
+                  : undefined;
+                return (
+                  <button
+                    className={`button-8bit consumable-btn${doubleDownActive ? ' is-active' : ''}`}
+                    onClick={onUseDoubleDown}
+                    disabled={isDisabled}
+                    title={disabledReason}
+                  >
+                    💎 Double Down{doubleDownActive ? ' (ACTIVE)' : ` ×${gameState.powerups.doubleDown}`}
+                  </button>
+                );
+              })()}
+            </div>
+          </div>
+        )}
 
         {/* Mobile-only inventory */}
         <div className="combat-mobile-stats">
