@@ -219,7 +219,74 @@ const CombatScreen = ({
           )}
         </div>
 
-        {/* Consumables Strip */}
+        {/* Mobile-only items strip */}
+        <div className="combat-mobile-items">
+          <div className="consumables-strip-wrapper">
+            <div className="stat-label">ITEMS</div>
+            <div className="consumables-strip">
+              <button
+                className="button-8bit consumable-btn"
+                onClick={onReroll}
+                disabled={!playerHasRolled || combat.rerollsLeft === 0 || rollResult?.type === 'instant_win' || rollResult?.type === 'cursed'}
+                title={combat.rerollsLeft === 0 ? 'None left' : !playerHasRolled ? 'Roll first' : undefined}
+              >
+                🔄 Reroll ×{combat.rerollsLeft}
+              </button>
+              {(gameState.powerups.highRoller > 0 || highRollerActive) && (
+                <button
+                  className={`button-8bit consumable-btn${highRollerActive ? ' is-active' : ''}`}
+                  onClick={onUseHighRoller}
+                  disabled={playerHasRolled || highRollerActive}
+                  title={highRollerActive ? 'Already active' : playerHasRolled ? 'Must use before rolling' : undefined}
+                >
+                  🎰 High Roller{highRollerActive ? ' (ACTIVE)' : ` ×${gameState.powerups.highRoller}`}
+                </button>
+              )}
+              {(gameState.powerups.doubleDown > 0 || doubleDownActive) && (
+                <button
+                  className={`button-8bit consumable-btn${doubleDownActive ? ' is-active' : ''}`}
+                  onClick={onUseDoubleDown}
+                  disabled={!playerHasRolled || rollResult?.type !== 'trips' || doubleDownActive}
+                  title={doubleDownActive ? 'Already active' : !playerHasRolled ? 'Roll first' : rollResult?.type !== 'trips' ? 'Only on trips' : undefined}
+                >
+                  💎 Double Down{doubleDownActive ? ' (ACTIVE)' : ` ×${gameState.powerups.doubleDown}`}
+                </button>
+              )}
+              {gameState.powerups.wildDie > 0 && (
+                <button className="button-8bit consumable-btn" disabled title="Click dice to use">
+                  🎯 Wild Die ×{gameState.powerups.wildDie - wildDieUsed - (pendingWildDie ? 1 : 0)}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+      </main>
+
+      <aside className="combat-sidebar card-8bit pixel-border">
+        <div className="hp-float-container">
+          <HPBar
+            current={combat.playerHP}
+            max={Math.max(combat.playerHP, combat.playerMaxHP)}
+            label="YOUR HP"
+            type="player"
+          />
+          {floatingNumbers.player.map(n => (
+            <FloatingNumber key={n.id} value={n.value} onDone={() => onRemoveFloat(n.id, 'player')} />
+          ))}
+        </div>
+        <div className="hp-float-container">
+          <HPBar
+            current={combat.enemyHP}
+            max={combat.enemyMaxHP}
+            label="ENEMY HP"
+            type="enemy"
+          />
+          {floatingNumbers.enemy.map(n => (
+            <FloatingNumber key={n.id} value={n.value} onDone={() => onRemoveFloat(n.id, 'enemy')} />
+          ))}
+        </div>
+        {/* Sidebar items strip */}
         <div className="consumables-strip-wrapper">
           <div className="stat-label">ITEMS</div>
           <div className="consumables-strip">
@@ -252,41 +319,11 @@ const CombatScreen = ({
               </button>
             )}
             {gameState.powerups.wildDie > 0 && (
-              <button
-                className="button-8bit consumable-btn"
-                disabled
-                title="Click dice to use"
-              >
+              <button className="button-8bit consumable-btn" disabled title="Click dice to use">
                 🎯 Wild Die ×{gameState.powerups.wildDie - wildDieUsed - (pendingWildDie ? 1 : 0)}
               </button>
             )}
           </div>
-        </div>
-
-      </main>
-
-      <aside className="combat-sidebar card-8bit pixel-border">
-        <div className="hp-float-container">
-          <HPBar
-            current={combat.playerHP}
-            max={Math.max(combat.playerHP, combat.playerMaxHP)}
-            label="YOUR HP"
-            type="player"
-          />
-          {floatingNumbers.player.map(n => (
-            <FloatingNumber key={n.id} value={n.value} onDone={() => onRemoveFloat(n.id, 'player')} />
-          ))}
-        </div>
-        <div className="hp-float-container">
-          <HPBar
-            current={combat.enemyHP}
-            max={combat.enemyMaxHP}
-            label="ENEMY HP"
-            type="enemy"
-          />
-          {floatingNumbers.enemy.map(n => (
-            <FloatingNumber key={n.id} value={n.value} onDone={() => onRemoveFloat(n.id, 'enemy')} />
-          ))}
         </div>
       </aside>
     </div>
