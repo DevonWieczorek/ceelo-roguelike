@@ -1,5 +1,4 @@
 import HPBar from '../ui/HPBar';
-import StatBox from '../ui/StatBox';
 import Dice from '../ui/Dice';
 import FloatingNumber from '../ui/FloatingNumber';
 import { GAME_CONFIG } from '../../constants/gameConfig';
@@ -216,73 +215,54 @@ const CombatScreen = ({
               >
                 🛡️ DEFEND
               </button>
-              <button
-                className="button-8bit button-warning"
-                onClick={onReroll}
-                disabled={!rollResult || combat.rerollsLeft === 0 || rollResult.type === 'instant_win' || rollResult.type === 'cursed'}
-              >
-                🔄 REROLL ({combat.rerollsLeft})
-              </button>
             </>
           )}
         </div>
 
         {/* Consumables Strip */}
-        {(gameState.powerups.highRoller > 0 || highRollerActive || gameState.powerups.doubleDown > 0 || doubleDownActive) && (
-          <div className="consumables-strip-wrapper">
-            <div className="stat-label">ITEMS</div>
-            <div className="consumables-strip">
-              {(gameState.powerups.highRoller > 0 || highRollerActive) && (() => {
-                const isDisabled = playerHasRolled || highRollerActive;
-                const disabledReason = highRollerActive
-                  ? 'Already active'
-                  : playerHasRolled
-                  ? 'Must use before rolling'
-                  : undefined;
-                return (
-                  <button
-                    className={`button-8bit consumable-btn${highRollerActive ? ' is-active' : ''}`}
-                    onClick={onUseHighRoller}
-                    disabled={isDisabled}
-                    title={disabledReason}
-                  >
-                    🎰 High Roller{highRollerActive ? ' (ACTIVE)' : ` ×${gameState.powerups.highRoller}`}
-                  </button>
-                );
-              })()}
-              {(gameState.powerups.doubleDown > 0 || doubleDownActive) && (() => {
-                const isDisabled = !playerHasRolled || rollResult?.type !== 'trips' || doubleDownActive;
-                const disabledReason = doubleDownActive
-                  ? 'Already active'
-                  : !playerHasRolled
-                  ? 'Roll first'
-                  : rollResult?.type !== 'trips'
-                  ? 'Only on trips'
-                  : undefined;
-                return (
-                  <button
-                    className={`button-8bit consumable-btn${doubleDownActive ? ' is-active' : ''}`}
-                    onClick={onUseDoubleDown}
-                    disabled={isDisabled}
-                    title={disabledReason}
-                  >
-                    💎 Double Down{doubleDownActive ? ' (ACTIVE)' : ` ×${gameState.powerups.doubleDown}`}
-                  </button>
-                );
-              })()}
-            </div>
+        <div className="consumables-strip-wrapper">
+          <div className="stat-label">ITEMS</div>
+          <div className="consumables-strip">
+            <button
+              className="button-8bit consumable-btn"
+              onClick={onReroll}
+              disabled={!playerHasRolled || combat.rerollsLeft === 0 || rollResult?.type === 'instant_win' || rollResult?.type === 'cursed'}
+              title={combat.rerollsLeft === 0 ? 'None left' : !playerHasRolled ? 'Roll first' : undefined}
+            >
+              🔄 Reroll ×{combat.rerollsLeft}
+            </button>
+            {(gameState.powerups.highRoller > 0 || highRollerActive) && (
+              <button
+                className={`button-8bit consumable-btn${highRollerActive ? ' is-active' : ''}`}
+                onClick={onUseHighRoller}
+                disabled={playerHasRolled || highRollerActive}
+                title={highRollerActive ? 'Already active' : playerHasRolled ? 'Must use before rolling' : undefined}
+              >
+                🎰 High Roller{highRollerActive ? ' (ACTIVE)' : ` ×${gameState.powerups.highRoller}`}
+              </button>
+            )}
+            {(gameState.powerups.doubleDown > 0 || doubleDownActive) && (
+              <button
+                className={`button-8bit consumable-btn${doubleDownActive ? ' is-active' : ''}`}
+                onClick={onUseDoubleDown}
+                disabled={!playerHasRolled || rollResult?.type !== 'trips' || doubleDownActive}
+                title={doubleDownActive ? 'Already active' : !playerHasRolled ? 'Roll first' : rollResult?.type !== 'trips' ? 'Only on trips' : undefined}
+              >
+                💎 Double Down{doubleDownActive ? ' (ACTIVE)' : ` ×${gameState.powerups.doubleDown}`}
+              </button>
+            )}
+            {gameState.powerups.wildDie > 0 && (
+              <button
+                className="button-8bit consumable-btn"
+                disabled
+                title="Click dice to use"
+              >
+                🎯 Wild Die ×{gameState.powerups.wildDie - wildDieUsed - (pendingWildDie ? 1 : 0)}
+              </button>
+            )}
           </div>
-        )}
-
-        {/* Mobile-only inventory */}
-        <div className="combat-mobile-stats">
-          <StatBox label="REROLLS" value={combat.rerollsLeft} icon="🔄" />
-          <StatBox
-            label="WILD DIE"
-            value={gameState.powerups.wildDie - wildDieUsed - (pendingWildDie ? 1 : 0)}
-            icon="🎯"
-          />
         </div>
+
       </main>
 
       <aside className="combat-sidebar card-8bit pixel-border">
@@ -307,14 +287,6 @@ const CombatScreen = ({
           {floatingNumbers.enemy.map(n => (
             <FloatingNumber key={n.id} value={n.value} onDone={() => onRemoveFloat(n.id, 'enemy')} />
           ))}
-        </div>
-        <div className="status-grid">
-          <StatBox label="REROLLS" value={combat.rerollsLeft} icon="🔄" />
-          <StatBox
-            label="WILD DIE"
-            value={gameState.powerups.wildDie - wildDieUsed - (pendingWildDie ? 1 : 0)}
-            icon="🎯"
-          />
         </div>
       </aside>
     </div>
