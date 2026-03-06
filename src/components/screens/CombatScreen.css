@@ -84,6 +84,14 @@
   margin-top: var(--space-lg);
 }
 
+.wild-die-prompt {
+  text-align: center;
+  color: var(--color-warning);
+  text-shadow: 0 0 8px var(--color-warning);
+  animation: pulse 1s ease-in-out infinite;
+  margin-bottom: var(--space-xs);
+}
+
 .consumables-strip-wrapper {
   margin-top: var(--space-md);
 }

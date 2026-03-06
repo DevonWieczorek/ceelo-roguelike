@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import HPBar from '../ui/HPBar';
 import Dice from '../ui/Dice';
 import FloatingNumber from '../ui/FloatingNumber';
@@ -31,8 +32,15 @@ const CombatScreen = ({
   onReroll,
   onWildDie,
 }) => {
+  const [wildDieSelectMode, setWildDieSelectMode] = useState(false);
   const displayDice = isDiceRolling ? animatingDice : dice;
   const displayEnemyDice = isEnemyDiceRolling ? (enemyAnimatingDice || [1, 1, 1]) : enemyDice;
+  const wildDieLeft = gameState.powerups.wildDie - wildDieUsed - (pendingWildDie ? 1 : 0);
+
+  const handleAttackWithClear = () => { setWildDieSelectMode(false); onAttack(); };
+  const handleDefendWithClear = () => { setWildDieSelectMode(false); onDefend(); };
+  const handleRerollWithClear = () => { setWildDieSelectMode(false); onReroll(); };
+
   if (!combat) return null;
 
   return (
@@ -125,6 +133,10 @@ const CombatScreen = ({
         <div className="player-roll-section">
           <div className="stat-label">YOUR ROLL</div>
 
+          {wildDieSelectMode && !isDiceRolling && (
+            <div className="wild-die-prompt stat-label">🎯 Click a die to change its value</div>
+          )}
+
           {/* Dice — shown when rolling or result available */}
           {(isDiceRolling || rollResult) && (
             <div className="dice-container">
@@ -145,9 +157,9 @@ const CombatScreen = ({
                     dice.filter(d => d === value).length !== 1
                   }
                   onClick={() => onWildDie(idx, (value % 6) + 1)}
-                  clickable={!isDiceRolling && dice.length > 0 && (
+                  clickable={!isDiceRolling && dice.length > 0 && wildDieSelectMode && (
                     (pendingWildDie && pendingWildDie.index === idx) ||
-                    (wildDieUsed + (pendingWildDie ? 1 : 0)) < gameState.powerups.wildDie
+                    wildDieLeft > 0
                   )}
                 />
               ))}
@@ -203,14 +215,14 @@ const CombatScreen = ({
             <>
               <button
                 className="button-8bit button-danger"
-                onClick={onAttack}
+                onClick={handleAttackWithClear}
                 disabled={!rollResult || rollResult.type === 'none' || rollResult.type === 'instant_win' || rollResult.type === 'cursed'}
               >
                 ⚔️ ATTACK
               </button>
               <button
                 className="button-8bit button-success"
-                onClick={onDefend}
+                onClick={handleDefendWithClear}
                 disabled={!rollResult || rollResult.type === 'none' || rollResult.type === 'cursed' || rollResult.type === 'instant_win'}
               >
                 🛡️ DEFEND
@@ -226,7 +238,7 @@ const CombatScreen = ({
             <div className="consumables-strip">
               <button
                 className="button-8bit consumable-btn"
-                onClick={onReroll}
+                onClick={handleRerollWithClear}
                 disabled={!playerHasRolled || combat.rerollsLeft === 0 || rollResult?.type === 'instant_win' || rollResult?.type === 'cursed'}
                 title={combat.rerollsLeft === 0 ? 'None left' : !playerHasRolled ? 'Roll first' : undefined}
               >
@@ -253,8 +265,13 @@ const CombatScreen = ({
                 </button>
               )}
               {gameState.powerups.wildDie > 0 && (
-                <button className="button-8bit consumable-btn" disabled title="Click dice to use">
-                  🎯 Wild Die ×{gameState.powerups.wildDie - wildDieUsed - (pendingWildDie ? 1 : 0)}
+                <button
+                  className={`button-8bit consumable-btn${wildDieSelectMode ? ' is-active' : ''}`}
+                  onClick={() => setWildDieSelectMode(m => !m)}
+                  disabled={!playerHasRolled || wildDieLeft <= 0}
+                  title={!playerHasRolled ? 'Roll first' : wildDieLeft <= 0 ? 'None left' : wildDieSelectMode ? 'Click a die above, or click again to cancel' : undefined}
+                >
+                  🎯 Wild Die{wildDieSelectMode ? ' — SELECT' : ` ×${wildDieLeft}`}
                 </button>
               )}
             </div>
@@ -292,7 +309,7 @@ const CombatScreen = ({
           <div className="consumables-strip">
             <button
               className="button-8bit consumable-btn"
-              onClick={onReroll}
+              onClick={handleRerollWithClear}
               disabled={!playerHasRolled || combat.rerollsLeft === 0 || rollResult?.type === 'instant_win' || rollResult?.type === 'cursed'}
               title={combat.rerollsLeft === 0 ? 'None left' : !playerHasRolled ? 'Roll first' : undefined}
             >
@@ -319,8 +336,13 @@ const CombatScreen = ({
               </button>
             )}
             {gameState.powerups.wildDie > 0 && (
-              <button className="button-8bit consumable-btn" disabled title="Click dice to use">
-                🎯 Wild Die ×{gameState.powerups.wildDie - wildDieUsed - (pendingWildDie ? 1 : 0)}
+              <button
+                className={`button-8bit consumable-btn${wildDieSelectMode ? ' is-active' : ''}`}
+                onClick={() => setWildDieSelectMode(m => !m)}
+                disabled={!playerHasRolled || wildDieLeft <= 0}
+                title={!playerHasRolled ? 'Roll first' : wildDieLeft <= 0 ? 'None left' : wildDieSelectMode ? 'Click a die, or click again to cancel' : undefined}
+              >
+                🎯 Wild Die{wildDieSelectMode ? ' — SELECT' : ` ×${wildDieLeft}`}
               </button>
             )}
           </div>
